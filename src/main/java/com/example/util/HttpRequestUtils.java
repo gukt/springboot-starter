@@ -1,4 +1,4 @@
-package com.fairyland.common.util;
+package com.example.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

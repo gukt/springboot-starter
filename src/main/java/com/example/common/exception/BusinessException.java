@@ -1,8 +1,11 @@
 package com.example.common.exception;
 
+import lombok.Getter;
+
 /**
  * 业务异常类
  */
+@Getter
 public class BusinessException extends RuntimeException {
 
     /**
@@ -40,13 +43,6 @@ public class BusinessException extends RuntimeException {
     public BusinessException(String errorCode, String message, Throwable cause) {
         super(message, cause);
         this.errorCode = errorCode;
-    }
-
-    /**
-     * 获取错误代码
-     */
-    public String getErrorCode() {
-        return errorCode;
     }
 
     /**

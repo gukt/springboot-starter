@@ -1,4 +1,4 @@
-package com.fairyland.common.api;
+package com.example.common;
 
 import org.springframework.http.converter.json.MappingJacksonValue;
 

@@ -1,4 +1,4 @@
-package com.fairyland.common.api;
+package com.example.common;
 
 import com.fairyland.common.api.JsonViews.ApiResultView;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

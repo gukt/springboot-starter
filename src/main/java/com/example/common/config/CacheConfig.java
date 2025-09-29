@@ -185,11 +185,7 @@ public class CacheConfig {
             CaffeineCacheManager caffeineCacheManager,
             RedisCacheManager redisCacheManager) {
 
-        List<CacheManager> cacheManagers = new ArrayList<>();
-        cacheManagers.add(caffeineCacheManager);
-        cacheManagers.add(redisCacheManager);
-
-        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(cacheManagers);
+        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(caffeineCacheManager, redisCacheManager);
         compositeCacheManager.setFallbackToNoOpCache(true);
 
         log.info("Multi-level cache manager configured with Caffeine (L1) and Redis (L2)");

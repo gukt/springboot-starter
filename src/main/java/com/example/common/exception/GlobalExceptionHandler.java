@@ -1,5 +1,7 @@
-package com.example.common;
+package com.example.common.exception;
 
+import com.example.common.ApiResponse;
+import com.example.util.HttpRequestUtils;
 import com.fairyland.common.exception.*;
 import com.fairyland.common.util.HttpRequestUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,27 +35,29 @@ public class GlobalExceptionHandler {
 
     // 捕获 Spring Data JPA 包装的异常
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
-    public ApiResult<?> handleInvalidDataAccessApiUsage(InvalidDataAccessApiUsageException ex) {
-        return ApiResult.error(ErrorCode.UNAUTHORIZED);
+    public ApiResponse<?> handleInvalidDataAccessApiUsage(InvalidDataAccessApiUsageException ex) {
+        return ApiResponse.error(ErrorEnum.UNAUTHORIZED);
     }
     /**
      * 处理其他类型的异常。
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiResult<?> handleException(Exception e, HttpServletRequest request) {
+    public ApiResponse<?> handleException(Exception e, HttpServletRequest request) {
         log.error("未知异常: {}", HttpRequestUtils.generateCurlCommand(request), e);
-        return ApiResult.error(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        return ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     /**
-     * 全局处理业务单元抛出的 ServiceException 异常。
+     * 全局处理业务单元抛出的 BusinessException 异常。
      */
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
-    public ApiResult<?> handleBusinessException(BusinessException e, HttpServletRequest request) {
+    public ApiResponse<?> handleBusinessException(BusinessException e, HttpServletRequest request) {
         log.error("业务异常", e);
-        return ApiResult.error(e.getCode(), e.getMessage(), e.getDetails());
+        // FIXME
+//        return ApiResponse.error(e.getErrorCode(), e.getMessage(), e.getDetails());
+        return ApiResponse.error(e.getErrorCode(), e.getMessage());
     }
 
     /**
@@ -62,9 +66,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiResult<?> handleNoResourceFoundException(NoResourceFoundException e) {
+    public ApiResponse<?> handleNoResourceFoundException(NoResourceFoundException e) {
         log.error("资源未找到: {}", e.getMessage());
-        return ApiResult.error(HttpStatus.NOT_FOUND, e.getMessage());
+        return ApiResponse.error(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     /**
@@ -72,15 +76,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ApiResult<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
+    public ApiResponse<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
         String message = "请求方法错误: %s for '%s'".formatted(e.getMessage(), request.getRequestURI());
         log.warn("{}", message);
-        return ApiResult.error(HttpStatus.METHOD_NOT_ALLOWED, message);
+        return ApiResponse.error(HttpStatus.METHOD_NOT_ALLOWED, message);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResult<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
+    public ApiResponse<?> handleMissingServletRequestParameterException(MissingServletRequestParameterException e, HttpServletRequest request) {
         log.info("请求参数缺失 - {}, 参数名: {}, 参数类型: {}, URI: {}",
                 getHandlerMethodInfo(request),
                 e.getParameterName(),
@@ -88,7 +92,7 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
 
-        return ApiResult.error(
+        return ApiResponse.error(
                 HttpStatus.BAD_REQUEST,
                 String.format("缺少必需的参数: %s(%s)", e.getParameterName(), e.getParameterType())
         );
@@ -99,19 +103,19 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResult<?> handleValidationExceptions(MethodArgumentNotValidException e) {
+    public ApiResponse<?> handleValidationExceptions(MethodArgumentNotValidException e) {
         Map<String, Object> errorDetails = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errorDetails.put(fieldName, errorMessage);
         });
-        return ApiResult.error(HttpStatus.BAD_REQUEST, "Validation failed", errorDetails);
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, "Validation failed", errorDetails);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResult<?> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
+    public ApiResponse<?> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
         log.error("处理方法参数校验异常: ", e);
         Map<String, Object> errorDetails = new HashMap<>();
         try {
@@ -124,12 +128,12 @@ public class GlobalExceptionHandler {
         } catch (Exception ignored) {
             log.error("组装处理方法参数校验异常信息失败: ", e);
         }
-        return ApiResult.error(HttpStatus.BAD_REQUEST, "处理方法参数校验异常", errorDetails);
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, "处理方法参数校验异常", errorDetails);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiResult<?> handleConstraintViolationExceptions(ConstraintViolationException e, HttpServletRequest request) {
+    public ApiResponse<?> handleConstraintViolationExceptions(ConstraintViolationException e, HttpServletRequest request) {
         // 使用 WARN 级别，因为这是预期内的验证失败
         log.warn("处理方法的参数校验异常 - {}, {}", getHandlerMethodInfo(request), e.getMessage());
 
@@ -144,7 +148,7 @@ public class GlobalExceptionHandler {
         });
 
         // 以用户友好的方式返回错误信息
-        return ApiResult.error(HttpStatus.BAD_REQUEST, "请求参数有误，请检查", details);
+        return ApiResponse.error(HttpStatus.BAD_REQUEST, "请求参数有误，请检查", details);
     }
 
     /**

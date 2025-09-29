@@ -70,8 +70,6 @@ public class UserService extends AbstractService<User, Long> {
 
         existingUser.setUsername(user.getUsername());
         existingUser.setEmail(user.getEmail());
-        existingUser.setFullName(user.getFullName());
-        existingUser.setPhone(user.getPhone());
         existingUser.setAvatar(user.getAvatar());
         existingUser.setStatus(user.getStatus());
         existingUser.setUpdatedAt(LocalDateTime.now());

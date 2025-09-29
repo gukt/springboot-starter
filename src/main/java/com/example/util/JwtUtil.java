@@ -34,7 +34,6 @@ public class JwtUtil {
      * JWT过期时间（毫秒） - 默认24小时
      * -- GETTER --
      *  获取JWT过期时间
-
      */
     @Getter
     @Value("${jwt.expiration:86400000}")
