@@ -1,0 +1,113 @@
+# 开发环境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  # 数据库配置 - 开发环境
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:springboot_starter_dev}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    hikari:
+      # 开发环境连接池配置
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # JPA 配置 - 开发环境
+  jpa:
+    hibernate:
+      ddl-auto: update                    # 开发环境自动更新表结构
+    show-sql: true                         # 开发环境显示 SQL
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        generate_statistics: true           # 开发环境生成统计信息
+
+  # Flyway 配置 - 开发环境
+  flyway:
+    clean-disabled: false                 # 开发环境允许 clean
+    locations: classpath:db/migration,classpath:db/dev
+
+  # Redis 配置 - 开发环境
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+
+  # 缓存配置 - 开发环境
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=1800s  # 开发环境缓存时间较短
+
+# 日志配置 - 开发环境
+logging:
+  level:
+    root: INFO
+    com.example.demo: DEBUG               # 项目日志级别为 DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG              # 显示 SQL
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 显示 SQL 参数
+    org.springframework.cache: DEBUG
+    org.springframework.data.redis: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.HttpMappingLoggerMapping: TRACE
+    com.zaxxer.hikari: DEBUG               # 连接池日志
+    org.flywaydb: DEBUG                   # 数据库迁移日志
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%-5level) %clr(%logger{36}){cyan} - %msg%n"
+  file:
+    name: logs/dev/springboot-starter-dev.log
+
+# 开发环境特定配置
+app:
+  security:
+    debug: true                          # 开启 Spring Security 调试模式
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:8081,http://127.0.0.1:3000"
+    allowed-methods: "*"
+    allowed-headers: "*"
+    allow-credentials: true
+    max-age: 3600
+
+# 开发环境启用更多端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    beans:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    mappings:
+      enabled: true
+    scheduledtasks:
+      enabled: true
+    threaddump:
+      enabled: true
+
+# 开发环境热更新配置
+spring:
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: static/**,public/**
+    livereload:
+      enabled: true
+    remote:
+      restart:
+        enabled: true

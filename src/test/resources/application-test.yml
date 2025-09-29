@@ -1,0 +1,68 @@
+# 测试环境配置
+server:
+  port: 0
+
+spring:
+  # 数据库配置
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+
+  # JPA 配置
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+
+  # H2 控制台
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Redis 配置（测试环境使用嵌入式 Redis）
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 0
+
+# JWT 配置
+jwt:
+  secret: test-secret-key-123456789-test-secret-key
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+# 日志配置
+logging:
+  level:
+    com.example: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+
+# 缓存配置
+spring:
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      cache-null-values: false
+
+# Swagger 配置
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# 应用配置
+application:
+  name: springboot-starter-test
+  version: 1.0.0
+  description: Spring Boot Starter Test Environment

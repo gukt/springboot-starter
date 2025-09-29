@@ -6,9 +6,9 @@
   "configurations": [
     {
       "type": "java",
-      "name": "DemoApplication",
+      "name": "Application(dev)",
       "request": "launch",
-      "mainClass": "com.example.demo.DemoApplication",
+      "mainClass": "com.example.demo.Application",
       "projectName": "springboot-starter"
     }
   ]

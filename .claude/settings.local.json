@@ -1,6 +1,12 @@
 {
   "permissions": {
-    "allow": ["Bash(git add:*)", "Bash(git commit:*)"],
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "Bash(curl:*)",
+      "Read(//home/gukt/.claude/**)"
+    ],
     "deny": [],
     "ask": []
   }

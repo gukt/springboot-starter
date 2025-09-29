@@ -1,11 +1,11 @@
-package com.example.demo.controller;
+package com.example.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import com.example.demo.Greeting;
-import com.example.demo.HelloMessage;
+import com.example.Greeting;
+import com.example.HelloMessage;
 
 @Controller
 public class GreetingController {
