@@ -1,16 +1,7 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/plain,text/xml,text/css,application/javascript
-    min-response-size: 2048
-
+debug: false
 spring:
   application:
     name: springboot-starter
-
   profiles:
     active: dev
 
@@ -29,7 +20,7 @@ spring:
       max-lifetime: 1800000              # 连接最大生命周期：30分钟
       leak-detection-threshold: 60000    # 连接泄漏检测阈值：60秒
       connection-test-query: SELECT 1    # 连接测试查询
-      pool-name: SpringBootHikariCP       # 连接池名称
+      pool-name: SpringBootHikariCP      # 连接池名称
 
   # JPA 配置
   jpa:
@@ -44,23 +35,14 @@ spring:
         jdbc.batch_size: 25                # JDBC 批处理大小
         order_inserts: true                # 优化批量插入
         order_updates: true                # 优化批量更新
-        jdbc.fetch_size: 100              # JDBC 获取大小
+        jdbc.fetch_size: 100               # JDBC 获取大小
         generate_statistics: false         # 不生成统计信息
-    open-in-view: false                  # 关闭 Open Session in View
+    open-in-view: false                    # 关闭 Open Session in View
 
   # Flyway 配置
   flyway:
-    enabled: true
-    locations: classpath:db/migration
     baseline-on-migrate: true
-    validate-on-migrate: true
-    clean-disabled: true
-    table: flyway_schema_history
     sql-migration-separator: ;;
-    sql-migration-prefixes: V
-    sql-migration-suffixes: .sql
-    encoding: UTF-8
-    placeholder-replacement: true
     placeholders:
       # 占位符配置
       db_name: ${DB_NAME:springboot_starter_dev}
@@ -72,8 +54,9 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:}
       database: ${REDIS_DATABASE:0}
-      timeout: 10000                    # 连接超时时间：10秒
+      timeout: 10s                       # 连接超时时间：10秒
       lettuce:
+        # 连接池配置
         pool:
           max-active: 20                 # 最大活跃连接数
           max-idle: 10                   # 最大空闲连接数
@@ -83,7 +66,7 @@ spring:
 
   # 缓存配置
   cache:
-    type: caffeine                     # 默认使用 Caffeine
+    type: caffeine # 默认使用 Caffeine
     cache-names: user, role, permission, api_response
     caffeine:
       spec: maximumSize=1000,expireAfterWrite=3600s  # Caffeine 缓存配置
@@ -113,6 +96,15 @@ spring:
     encoding: UTF-8
     fallback-to-system-locale: false
 
+  # 任务执行配置
+  task:
+    execution:
+      pool:
+        core-size: 10
+        max-size: 100
+        queue-capacity: 100
+        keep-alive: 60s
+
 # JWT 配置
 jwt:
   secret: ${JWT_SECRET:mySecretKey123456789}
@@ -120,26 +112,6 @@ jwt:
   refresh-expiration: 604800000           # 7天
   header: Authorization
   prefix: Bearer
-
-# Langfuse 配置
-langfuse:
-  enabled: ${LANGFUSE_ENABLED:false}       # 是否启用 Langfuse 追踪
-  host: ${LANGFUSE_HOST:https://cloud.langfuse.com}  # Langfuse 服务器地址
-  api-key: ${LANGFUSE_API_KEY:}           # Langfuse API 密钥
-  secret-key: ${LANGFUSE_SECRET_KEY:}     # Langfuse 密钥
-  project: ${LANGFUSE_PROJECT:default}     # 项目名称
-  user-id: ${LANGFUSE_USER_ID:system}     # 用户 ID
-  session-id: ${LANGFUSE_SESSION_ID:}      # 会话 ID
-  tags: ${LANGFUSE_TAGS:api}              # 标签
-  # 追踪配置
-  trace:
-    enabled: ${LANGFUSE_TRACE_ENABLED:true}  # 是否启用请求追踪
-    sample-rate: ${LANGFUSE_SAMPLE_RATE:1.0} # 采样率 (0.0-1.0)
-    include-request-headers: ${LANGFUSE_INCLUDE_REQUEST_HEADERS:true}  # 是否包含请求头
-    include-response-headers: ${LANGFUSE_INCLUDE_RESPONSE_HEADERS:true} # 是否包含响应头
-    include-request-body: ${LANGFUSE_INCLUDE_REQUEST_BODY:true}         # 是否包含请求体
-    include-response-body: ${LANGFUSE_INCLUDE_RESPONSE_BODY:true}        # 是否包含响应体
-    max-body-size: ${LANGFUSE_MAX_BODY_SIZE:1024} # 最大记录 body 大小 (KB)
 
 # Swagger 配置
 springdoc:
@@ -160,9 +132,12 @@ springdoc:
   default-consumes-media-type: application/json
 
 # 日志配置
+# https://docs.spring.io/spring-boot/reference/features/logging.html
 logging:
   level:
     root: INFO
+    web: INFO
+    sql: ERROR
     com.example.demo: DEBUG
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
@@ -174,69 +149,31 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
-    name: logs/springboot-starter.log
+    name: logs/${spring.application.name}.log
     max-size: 10MB
     max-history: 30
     total-size-cap: 1GB
 
-# 管理端点配置
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,env,beans
-      base-path: /actuator
-  endpoint:
-    health:
-      show-details: when-authorized
-      probes:
-        enabled: true
-    info:
-      enabled: true
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-    tags:
-      application: springboot-starter
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
-            percentiles: 0.5,0.95,0.99
-
 ## 应用信息
-#info:
-#  app:
-#    name: Spring Boot Starter
-#    version: 1.0.0
-#    description: Spring Boot 脚手架项目
-#    encoding: UTF-8
-
-## 自定义配置
-#app:
-#  security:
-#    allow-paths: /api/auth/**,/swagger-ui/**,/api-docs/**,/actuator/**
-#    cors:
-#      allowed-origins: "*"
-#      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,HEAD
-#      allowed-headers: "*"
-#      allow-credentials: true
-#      max-age: 3600
-#  cache:
-#    default-ttl: 3600                 # 默认缓存时间：1小时
-#    user-ttl: 1800                    # 用户缓存时间：30分钟
-#    api-ttl: 600                      # API 响应缓存时间：10分钟
-#  pagination:
-#    default-size: 20                  # 默认分页大小
-#    max-size: 100                     # 最大分页大小
-#  upload:
-#    path: ${UPLOAD_PATH:./uploads}     # 文件上传路径
-#    max-size: 10485760                 # 最大文件大小：10MB
-#  file:
-#    storage-type: local               # 文件存储类型：local,oss,minio
-#    allowed-types: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,txt
+app:
+  security:
+    allow-paths: /api/auth/**,/swagger-ui/**,/api-docs/**,/actuator/**
+    cors:
+      allowed-origins: "*"
+      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,HEAD
+      allowed-headers: "*"
+      allow-credentials: true
+      max-age: 3600
+  cache:
+      default-ttl: 3600                 # 默认缓存时间：1小时
+      user-ttl: 1800                    # 用户缓存时间：30分钟
+      api-ttl: 600                      # API 响应缓存时间：10分钟
+  pagination:
+      default-size: 20                  # 默认分页大小
+      max-size: 100                     # 最大分页大小
+  upload:
+      path: ${UPLOAD_PATH:./uploads}     # 文件上传路径
+      max-size: 10485760                 # 最大文件大小：10MB
+  file:
+      storage-type: local               # 文件存储类型：local,oss,minio
+      allowed-types: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,txt

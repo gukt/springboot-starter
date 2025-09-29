@@ -5,7 +5,12 @@
       "Bash(git commit:*)",
       "WebSearch",
       "Bash(curl:*)",
-      "Read(//home/gukt/.claude/**)"
+      "Read(//home/gukt/.claude/**)",
+      "Bash(yq:*)",
+      "Bash(python3:*)",
+      "Bash(cat:*)",
+      "Bash(sed:*)",
+      "Bash(./gradlew:*)"
     ],
     "deny": [],
     "ask": []
