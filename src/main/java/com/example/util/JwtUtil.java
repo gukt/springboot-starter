@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.JwtParser;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +18,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * JWT工具类
+ * JWT 工具类
  * 负责JWT Token的生成、解析、验证等操作
  */
 @Slf4j
@@ -33,7 +34,7 @@ public class JwtUtil {
     /**
      * JWT过期时间（毫秒） - 默认24小时
      * -- GETTER --
-     *  获取JWT过期时间
+     * 获取JWT过期时间
      */
     @Getter
     @Value("${jwt.expiration:86400000}")
@@ -42,8 +43,8 @@ public class JwtUtil {
     /**
      * 刷新Token过期时间（毫秒） - 默认7天
      * -- GETTER --
-     *  获取刷新Token过期时间
-
+     * 获取刷新Token过期时间
+     * 
      */
     @Getter
     @Value("${jwt.refresh-expiration:604800000}")
@@ -79,19 +80,16 @@ public class JwtUtil {
     }
 
     /**
-     * 从token中获取所有claims
+     * 从 token 中获取所有 claims
      */
-    private Claims getAllClaimsFromToken(String token) {
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            log.error("Failed to parse JWT token: {}", e.getMessage());
-            throw new RuntimeException("Invalid JWT token", e);
-        }
+    public Claims getAllClaimsFromToken(String token) {
+        // FIXME
+        return null;
+        // // 这里通过密钥解析 token 并获取所有 claims
+        // JwtParser parser = Jwts.builder()
+        //         .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+        //         .parseClaimsJws(token);
+        // return parser.parseClaimsJws(token).getBody();
     }
 
     /**

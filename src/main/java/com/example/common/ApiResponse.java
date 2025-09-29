@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class ApiResponse<T> {
 
     /** 简单的成功响应，返回字符串 OK */
-    public static final ApiResponse<String> OK = ApiResponse.of("OK");
+    public static final ApiResponse<String> OK = ApiResponse.success("OK");
 
     /**
      * 错误响应体的结构
@@ -77,7 +77,7 @@ public class ApiResponse<T> {
     // Static Methods
 
     @SuppressWarnings("unchecked")
-    public static <T> ApiResponse<T> of(T data, Map<String, Object> meta) {
+    public static <T> ApiResponse<T> success(T data, Map<String, Object> meta) {
         ApiResponse<T> instance = new ApiResponse<>();
         instance.data = data;
         if (Objects.isNull(data)) {
@@ -87,18 +87,18 @@ public class ApiResponse<T> {
         return instance;
     }
 
-    public static <T> ApiResponse<T> of(T data) {
-        return of(data, null);
+    public static <T> ApiResponse<T> success(T data) {
+        return success(data, null);
     }
 
-    public static ApiResponse<Void> of(Error error) {
+    public static ApiResponse<Void> success(Error error) {
         ApiResponse<Void> instance = new ApiResponse<>();
         instance.error = error;
         return instance;
     }
 
     public static ApiResponse<Void> error(String code, String message, Map<String, Object> details) {
-        return of(new Error(code, message, details));
+        return success(new Error(code, message, details));
     }
 
     public static ApiResponse<Void> error(String code, String message) {
@@ -106,7 +106,7 @@ public class ApiResponse<T> {
     }
 
     public static ApiResponse<Void> error(HttpStatus httpStatus, String message, Map<String, Object> details) {
-        return of(new Error(String.valueOf(httpStatus.value()), message, details));
+        return success(new Error(String.valueOf(httpStatus.value()), message, details));
     }
 
     public static ApiResponse<Void> error(HttpStatus httpStatus, String message) {

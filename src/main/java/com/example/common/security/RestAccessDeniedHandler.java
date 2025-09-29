@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -31,8 +32,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletRequest request,
             HttpServletResponse response,
             AccessDeniedException accessDeniedException
-    ) throws IOException, ServletException {
-
+    ) throws IOException {
         log.error("Access denied for request {}: {}",
                  request.getRequestURI(), accessDeniedException.getMessage());
 
@@ -43,7 +43,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
         // 创建错误响应
         ApiResponse<Void> errorResponse = ApiResponse.error(
-                HttpServletResponse.SC_FORBIDDEN,
+                HttpStatus.FORBIDDEN,
                 "权限不足: " + accessDeniedException.getMessage()
         );
 

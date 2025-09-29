@@ -2,8 +2,6 @@ package com.example.common.exception;
 
 import com.example.common.ApiResponse;
 import com.example.util.HttpRequestUtils;
-import com.fairyland.common.exception.*;
-import com.fairyland.common.util.HttpRequestUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;

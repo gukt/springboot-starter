@@ -1,25 +1,26 @@
 package com.example.service;
 
-import com.example.domain.User;
-import com.example.dto.LoginRequest;
-import com.example.dto.RegisterRequest;
-import com.example.dto.JwtResponse;
-import com.example.repository.UserRepository;
-import com.example.util.JwtUtil;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import com.example.domain.User;
+import com.example.dto.LoginRequest;
+import com.example.dto.RegisterRequest;
+import com.example.dto.UserProfile;
+import com.example.repository.UserRepository;
+import com.example.util.JwtUtil;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 认证服务类
@@ -39,7 +40,7 @@ public class AuthService {
      * 用户登录
      */
     @Transactional
-    public JwtResponse login(LoginRequest request) {
+    public UserProfile login(LoginRequest request) {
         String username = request.getUsername();
 
         log.info("User login attempt: {}", username);
@@ -47,39 +48,38 @@ public class AuthService {
         try {
             // 执行认证
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(username, request.getPassword()));
 
             // 设置认证信息到上下文
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // 加载用户详情
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // FIXME
+            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("用户不存在"));
 
-            // 生成JWT Token
-            String accessToken = jwtUtil.generateToken(userDetails, user.getId(), user.getFullName());
-            String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+            // FIXME
+            // // 生成JWT Token
+            // String accessToken = jwtUtil.generateToken(userDetails, user.getId(),
+            // user.getFullName());
+            // String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
             // 更新用户最后登录时间
             user.setLastLoginAt(LocalDateTime.now());
             userRepository.save(user);
 
             // 构建响应
-            JwtResponse response = JwtResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
+            UserProfile response = UserProfile.builder()
+                    .token("TODO: accessToken")
                     .tokenType("Bearer")
+                    .tokenExpiresAt(LocalDateTime.now())
                     .userId(user.getId())
                     .username(user.getUsername())
-                    .fullName(user.getFullName())
-                    .email(user.getEmail())
                     .avatar(user.getAvatar())
-                    .accessTokenExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .refreshTokenExpiresAt(calculateExpiryTime(jwtUtil.getRefreshExpiration()))
-                    .isAdmin(user.getIsAdmin())
-                    .loginTime(LocalDateTime.now())
+                    .email(user.getEmail())
+                    // FIXME
+                    // .expiresIn(calculateExpiryTime(jwtUtil.getExpiration()))
                     .build();
 
             log.info("User login successful: {}", username);
@@ -101,7 +101,7 @@ public class AuthService {
      * 用户注册
      */
     @Transactional
-    public JwtResponse register(RegisterRequest request) {
+    public UserProfile register(RegisterRequest request) {
         String username = request.getUsername();
         String email = request.getEmail();
 
@@ -132,28 +132,27 @@ public class AuthService {
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setStatus(true);
-            user.setIsAdmin(false);
+            user.setAdmin(false);
 
             // 保存用户
             userRepository.save(user);
 
             // 生成 JWT Token
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            String accessToken = jwtUtil.generateToken(userDetails, user.getId(), user.getFullName());
-            String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // String accessToken = jwtUtil.generateToken(userDetails, user.getId(),
+            // user.getFullName());
 
             // 构建响应
-            JwtResponse response = JwtResponse.builder()
-                    .accessToken(accessToken)
-                    .refreshToken(refreshToken)
+            UserProfile response = UserProfile.builder()
+                    .token("TODO: accessToken")
                     .tokenType("Bearer")
                     .userId(user.getId())
                     .username(user.getUsername())
-                    .fullName(user.getFullName())
                     .email(user.getEmail())
-                    .accessTokenExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .refreshTokenExpiresAt(calculateExpiryTime(jwtUtil.getRefreshExpiration()))
-                    .isAdmin(user.getIsAdmin())
+                    .avatar(user.getAvatar())
+                    // FIXME
+                    // .tokenExpiresAt(enExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
+                    .isAdmin(user.isAdmin())
                     .loginTime(LocalDateTime.now())
                     .build();
 
@@ -170,7 +169,7 @@ public class AuthService {
      * 刷新Token
      */
     @Transactional
-    public JwtResponse refreshToken(String refreshToken) {
+    public UserProfile refreshToken(String refreshToken) {
         log.debug("Token refresh attempt");
 
         try {
@@ -193,27 +192,24 @@ public class AuthService {
             }
 
             // 加载用户详情
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new RuntimeException("用户不存在"));
 
             // 生成新的Token
-            String newAccessToken = jwtUtil.generateToken(userDetails, user.getId(), user.getFullName());
-            String newRefreshToken = jwtUtil.generateRefreshToken(userDetails);
+            // String newAccessToken = jwtUtil.generateToken(userDetails, user.getId(),
+            // user.getFullName());
 
             // 构建响应
-            JwtResponse response = JwtResponse.builder()
-                    .accessToken(newAccessToken)
-                    .refreshToken(newRefreshToken)
+            UserProfile response = UserProfile.builder()
+                    .token("TODO: newAccessToken")
                     .tokenType("Bearer")
                     .userId(user.getId())
                     .username(user.getUsername())
-                    .fullName(user.getFullName())
                     .email(user.getEmail())
                     .avatar(user.getAvatar())
-                    .accessTokenExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .refreshTokenExpiresAt(calculateExpiryTime(jwtUtil.getRefreshExpiration()))
-                    .isAdmin(user.getIsAdmin())
+                    .tokenExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
+                    .isAdmin(user.isAdmin())
                     .build();
 
             log.debug("Token refresh successful for user: {}", username);
@@ -245,6 +241,21 @@ public class AuthService {
             log.error("Logout failed: {}", e.getMessage(), e);
             // 登出失败不影响用户体验，只记录日志
         }
+    }
+
+    public User getCurrentUser() {
+        // 从 SecurityContext 中获取当前登录的用户
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null; // 没有认证信息，返回 null
+        }
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof User user) {
+            return user; // 如果 principal 是 User 类型，直接返回
+        }
+        // 如果 principal 不是 User 类型，可以根据实际情况处理，比如返回 null 或抛出异常
+        return null;
     }
 
     /**

@@ -209,41 +209,34 @@ management:
             enabled: true
             percentiles: 0.5,0.95,0.99
 
-# 应用信息
-info:
-  app:
-    name: Spring Boot Starter
-    version: 1.0.0
-    description: Spring Boot 脚手架项目
-    encoding: UTF-8
-    java:
-      version: @java.version@
-    spring:
-      boot:
-        version: @spring-boot.version@
-    profiles:
-      active: @spring.profiles.active@
+## 应用信息
+#info:
+#  app:
+#    name: Spring Boot Starter
+#    version: 1.0.0
+#    description: Spring Boot 脚手架项目
+#    encoding: UTF-8
 
-# 自定义配置
-app:
-  security:
-    allow-paths: /api/auth/**,/swagger-ui/**,/api-docs/**,/actuator/**
-    cors:
-      allowed-origins: "*"
-      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,HEAD
-      allowed-headers: "*"
-      allow-credentials: true
-      max-age: 3600
-  cache:
-    default-ttl: 3600                 # 默认缓存时间：1小时
-    user-ttl: 1800                    # 用户缓存时间：30分钟
-    api-ttl: 600                      # API 响应缓存时间：10分钟
-  pagination:
-    default-size: 20                  # 默认分页大小
-    max-size: 100                     # 最大分页大小
-  upload:
-    path: ${UPLOAD_PATH:./uploads}     # 文件上传路径
-    max-size: 10485760                 # 最大文件大小：10MB
-  file:
-    storage-type: local               # 文件存储类型：local,oss,minio
-    allowed-types: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,txt
+## 自定义配置
+#app:
+#  security:
+#    allow-paths: /api/auth/**,/swagger-ui/**,/api-docs/**,/actuator/**
+#    cors:
+#      allowed-origins: "*"
+#      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,HEAD
+#      allowed-headers: "*"
+#      allow-credentials: true
+#      max-age: 3600
+#  cache:
+#    default-ttl: 3600                 # 默认缓存时间：1小时
+#    user-ttl: 1800                    # 用户缓存时间：30分钟
+#    api-ttl: 600                      # API 响应缓存时间：10分钟
+#  pagination:
+#    default-size: 20                  # 默认分页大小
+#    max-size: 100                     # 最大分页大小
+#  upload:
+#    path: ${UPLOAD_PATH:./uploads}     # 文件上传路径
+#    max-size: 10485760                 # 最大文件大小：10MB
+#  file:
+#    storage-type: local               # 文件存储类型：local,oss,minio
+#    allowed-types: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,txt

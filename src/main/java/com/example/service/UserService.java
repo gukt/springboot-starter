@@ -96,25 +96,10 @@ public class UserService extends AbstractService<User, Long> {
     }
 
     /**
-     * 搜索用户
-     */
-    public Page<User> searchUsers(String keyword, String status, Pageable pageable) {
-        if (StringUtils.hasText(keyword) && StringUtils.hasText(status)) {
-            return userRepository.findByUsernameContainingIgnoreCaseAndStatus(keyword, status, pageable);
-        } else if (StringUtils.hasText(keyword)) {
-            return userRepository.findByUsernameContainingIgnoreCase(keyword, pageable);
-        } else if (StringUtils.hasText(status)) {
-            return userRepository.findByStatus(status, pageable);
-        } else {
-            return userRepository.findAll(pageable);
-        }
-    }
-
-    /**
      * 更新用户状态
      */
     @Transactional
-    public User updateUserStatus(Long id, String status) {
+    public User updateUserStatus(Long id, boolean status) {
         User user = getUserById(id);
         user.setStatus(status);
         user.setUpdatedAt(LocalDateTime.now());

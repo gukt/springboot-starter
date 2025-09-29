@@ -2,7 +2,6 @@ package com.example.service;
 
 import com.example.common.exception.BusinessException;
 import com.example.domain.AppConfig;
-import com.example.dto.CreateAppConfigRequest;
 import com.example.dto.UpdateAppConfigRequest;
 import com.example.repository.AppConfigRepository;
 import com.example.service.base.AbstractService;
@@ -35,7 +34,7 @@ public class AppConfigService extends AbstractService<AppConfig, Long> {
      */
     @Transactional
     @CacheEvict(value = "config", allEntries = true)
-    public AppConfig createConfig(CreateAppConfigRequest request) {
+    public AppConfig createConfig(AppConfig request) {
         if (appConfigRepository.existsByConfigGroupAndConfigKey(request.getConfigGroup(), request.getConfigKey())) {
             throw new BusinessException("配置键已存在: " + request.getConfigKey());
         }

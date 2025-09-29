@@ -1,7 +1,6 @@
 package com.example.controller;
 
 import com.example.domain.AppConfig;
-import com.example.dto.CreateAppConfigRequest;
 import com.example.dto.UpdateAppConfigRequest;
 import com.example.service.AppConfigService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +38,7 @@ public class AppConfigController {
     @PostMapping
     @Operation(summary = "创建配置", description = "创建新的应用配置")
     @PreAuthorize("hasRole('ADMIN')")
-    public AppConfig createConfig(@Valid @RequestBody CreateAppConfigRequest request) {
+    public AppConfig createConfig(@Valid @RequestBody AppConfig request) {
         return appConfigService.createConfig(request);
     }
 

@@ -29,8 +29,8 @@ public class JsonViews {
     // JsonView interfaces
 
     public static MappingJacksonValue wrap(Object data, String viewName) {
-        if (!(data instanceof ApiResult)) {
-            data = ApiResult.of(data);
+        if (!(data instanceof ApiResponse<?>)) {
+            data = ApiResponse.success(data);
         }
         MappingJacksonValue bodyContainer = new MappingJacksonValue(data);
         Class<?> viewClass = getJsonViewClass(viewName);

@@ -7,27 +7,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 /**
- * JW 响应
+ * 用户注册或登录时返回的相应，包括用户基本信息与 Token 相关信息
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "JWT响应")
-public class JwtResponse {
+@Schema(description = "用户注册或登录时返回的相应，包括用户基本信息与 Token 相关信息")
+public class UserProfile {
 
     @Schema(description = "访问Token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-    private String accessToken;
-
-    @Schema(description = "刷新Token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-    private String refreshToken;
+    private String token;
 
     @Schema(description = "Token类型", example = "Bearer")
     @Builder.Default
     private String tokenType = "Bearer";
+
+    @Schema(description = "访问 Token 过期时间")
+    private LocalDateTime tokenExpiresAt;
 
     @Schema(description = "用户ID", example = "1")
     private Long userId;
@@ -41,20 +40,8 @@ public class JwtResponse {
     @Schema(description = "邮箱", example = "admin@example.com")
     private String email;
 
-    @Schema(description = "头像URL", example = "https://example.com/avatar.jpg")
+    @Schema(description = "头像 URL", example = "https://example.com/avatar.jpg")
     private String avatar;
-
-    @Schema(description = "用户角色列表")
-    private Set<String> roles;
-
-    @Schema(description = "用户权限列表")
-    private Set<String> permissions;
-
-    @Schema(description = "访问Token过期时间")
-    private LocalDateTime accessTokenExpiresAt;
-
-    @Schema(description = "刷新Token过期时间")
-    private LocalDateTime refreshTokenExpiresAt;
 
     @Schema(description = "是否为管理员", example = "true")
     @Builder.Default

@@ -12,9 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Tag(name = "用户管理", description = "用户管理相关接口")
 @SecurityRequirement(name = "Bearer")
@@ -38,7 +37,7 @@ public class UserController {
     /**
      * 创建用户
      */
-    @PostMapping
+    @PostMapping("/users")
     @Operation(summary = "创建用户", description = "创建新用户")
     @PreAuthorize("hasRole('ADMIN')")
     public User createUser(@Valid @RequestBody User user) {
@@ -48,7 +47,7 @@ public class UserController {
     /**
      * 获取用户详情
      */
-    @GetMapping("/{id}")
+    @GetMapping("/users/{id}")
     @Operation(summary = "获取用户详情", description = "根据用户ID获取用户详情")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User getUserById(@Parameter(description = "用户ID") @PathVariable Long id) {
@@ -58,7 +57,7 @@ public class UserController {
     /**
      * 更新用户
      */
-    @PutMapping("/{id}")
+    @PutMapping("/users/{id}")
     @Operation(summary = "更新用户", description = "更新用户信息")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User updateUser(@Parameter(description = "用户ID") @PathVariable Long id, @Valid @RequestBody User user) {
@@ -68,7 +67,7 @@ public class UserController {
     /**
      * 删除用户
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     @Operation(summary = "删除用户", description = "删除用户")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@Parameter(description = "用户ID") @PathVariable Long id) {
@@ -78,56 +77,32 @@ public class UserController {
     /**
      * 分页获取用户列表
      */
-    @GetMapping
+    @GetMapping("/users")
     @Operation(summary = "获取用户列表", description = "分页获取用户列表")
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<User> getUsers(@Parameter(description = "页码") @RequestParam(defaultValue = "0") Integer page,
-                               @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") Integer size,
-                               @Parameter(description = "排序字段") @RequestParam(required = false) String sort,
-                               @Parameter(description = "排序方向") @RequestParam(required = false) String direction) {
-
-        Sort.Direction sortDirection = direction != null && direction.equalsIgnoreCase("desc") ?
-            Sort.Direction.DESC : Sort.Direction.ASC;
-
-        Pageable pageable = sort != null ?
-            PageRequest.of(page, size, Sort.by(sortDirection, sort)) :
-            PageRequest.of(page, size);
-
-        return userService.getUsers(pageable);
-    }
-
-    /**
-     * 搜索用户
-     */
-    @GetMapping("/search")
-    @Operation(summary = "搜索用户", description = "根据关键词搜索用户")
-    @PreAuthorize("hasRole('ADMIN')")
-    public Page<User> searchUsers(@Parameter(description = "搜索关键词") @RequestParam(required = false) String keyword,
-                                  @Parameter(description = "用户状态") @RequestParam(required = false) String status,
-                                  @Parameter(description = "页码") @RequestParam(defaultValue = "0") Integer page,
-                                  @Parameter(description = "每页大小") @RequestParam(defaultValue = "10") Integer size) {
-
-        Pageable pageable = PageRequest.of(page, size);
-        return userService.searchUsers(keyword, status, pageable);
+    public Page<User> getUsers(@PageableDefault Pageable page) {
+        return userService.getUsers(page);
     }
 
     /**
      * 更新用户状态
      */
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/users/{id}/status")
     @Operation(summary = "更新用户状态", description = "更新用户状态")
     @PreAuthorize("hasRole('ADMIN')")
-    public User updateUserStatus(@Parameter(description = "用户ID") @PathVariable Long id, @Parameter(description = "用户状态") @RequestParam String status) {
+    public User updateUserStatus(@Parameter(description = "用户ID") @PathVariable Long id,
+            @Parameter(description = "用户状态") @RequestParam boolean status) {
         return userService.updateUserStatus(id, status);
     }
 
     /**
      * 修改密码
      */
-    @PostMapping("/{id}/change-password")
+    @PostMapping("/users/{id}/change-password")
     @Operation(summary = "修改密码", description = "修改用户密码")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
-    public void changePassword(@Parameter(description = "用户ID") @PathVariable Long id, @RequestBody Map<String, String> passwordRequest) {
+    public void changePassword(@Parameter(description = "用户ID") @PathVariable Long id,
+            @RequestBody Map<String, String> passwordRequest) {
         String oldPassword = passwordRequest.get("oldPassword");
         String newPassword = passwordRequest.get("newPassword");
 
@@ -141,7 +116,7 @@ public class UserController {
     /**
      * 重置密码
      */
-    @PostMapping("/{id}/reset-password")
+    @PostMapping("/users/{id}/reset-password")
     @Operation(summary = "重置密码", description = "重置用户密码")
     @PreAuthorize("hasRole('ADMIN')")
     public ApiResponse<String> resetPassword(@Parameter(description = "用户ID") @PathVariable Long id) {
@@ -152,7 +127,7 @@ public class UserController {
     /**
      * 批量删除用户
      */
-    @DeleteMapping("/batch")
+    @DeleteMapping("/users/batch")
     @Operation(summary = "批量删除用户", description = "批量删除多个用户")
     @PreAuthorize("hasRole('ADMIN')")
     public void batchDeleteUsers(@RequestBody List<Long> userIds) {
@@ -162,7 +137,7 @@ public class UserController {
     /**
      * 检查用户名是否存在
      */
-    @GetMapping("/check-username")
+    @GetMapping("/users/check-username")
     @Operation(summary = "检查用户名", description = "检查用户名是否已存在")
     public Boolean checkUsername(@Parameter(description = "用户名") @RequestParam String username) {
         return userService.existsByUsername(username);
@@ -171,7 +146,7 @@ public class UserController {
     /**
      * 检查邮箱是否存在
      */
-    @GetMapping("/check-email")
+    @GetMapping("/users/check-email")
     @Operation(summary = "检查邮箱", description = "检查邮箱是否已存在")
     public Boolean checkEmail(@Parameter(description = "邮箱") @RequestParam String email) {
         return userService.existsByEmail(email);
@@ -180,7 +155,7 @@ public class UserController {
     /**
      * 获取当前用户信息
      */
-    @GetMapping("/me")
+    @GetMapping("/user")
     @Operation(summary = "获取当前用户", description = "获取当前登录用户信息")
     public User getCurrentUser() {
         return authService.getCurrentUser();
@@ -189,7 +164,7 @@ public class UserController {
     /**
      * 更新当前用户信息
      */
-    @PutMapping("/me")
+    @PutMapping("/user")
     @Operation(summary = "更新当前用户", description = "更新当前登录用户信息")
     public User updateCurrentUser(@Valid @RequestBody User user) {
         User currentUser = authService.getCurrentUser();
@@ -199,7 +174,7 @@ public class UserController {
     /**
      * 修改当前用户密码
      */
-    @PostMapping("/me/change-password")
+    @PostMapping("/user/change-password")
     @Operation(summary = "修改当前用户密码", description = "修改当前登录用户密码")
     public void changeCurrentUserPassword(@RequestBody Map<String, String> passwordRequest) {
         User currentUser = authService.getCurrentUser();

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -43,7 +44,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         // 创建错误响应
         ApiResponse<Void> errorResponse = ApiResponse.error(
-                HttpServletResponse.SC_UNAUTHORIZED,
+                HttpStatus.UNAUTHORIZED,
                 "认证失败: " + authException.getMessage()
         );
 

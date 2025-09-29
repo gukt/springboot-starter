@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.LoginRequest;
 import com.example.dto.LoginResponse;
+import com.example.dto.UserProfile;
 import com.example.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,13 +28,14 @@ public class AuthController {
      * 用户登录
      */
     @PostMapping("/login")
-    @Operation(summary = "用户登录", description = "用户登录获取JWT Token")
-    public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+    @Operation(summary = "用户登录", description = "用户登录获取 JWT Token")
+    public UserProfile login(@Valid @RequestBody LoginRequest request) {
         log.info("User login attempt: {}", request.getUsername());
 
-        LoginResponse response = authService.login(request);
+        UserProfile response = authService.login(request);
 
         log.info("User login successful: {}", request.getUsername());
+
         return response;
     }
 
@@ -45,7 +47,7 @@ public class AuthController {
     public void logout(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         log.info("User logout attempt");
 
-        // 提取Token
+        // 提取 Token
         String token = null;
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);

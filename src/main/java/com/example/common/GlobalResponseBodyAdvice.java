@@ -26,11 +26,10 @@ import java.util.regex.Pattern;
  * 全局响应体处理器。
  * <p>
  * <a href="https://stackoverflow.com/a/64940739/21335614">@ControllerAdvice does not allow Swagger UI to be displayed</a>
- * <p>
  */
 @RestControllerAdvice(basePackages = "com.fairyland")
 @Slf4j
-public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
+public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
     /**
      * 前置检查，以决定 beforeBodyWrite 方法是否要被执行。
@@ -65,7 +64,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
                                   @Nonnull ServerHttpRequest request,
                                   @Nonnull ServerHttpResponse response) {
         // 以下类型，直接返回不做处理。
-        if (body instanceof ApiResult
+        if (body instanceof ApiResponse
                 || body instanceof Resource
                 // 用于直接返回的结果，比如 byte[] 类型（直接返回响应流）。
                 // || body instanceof byte[]
@@ -83,7 +82,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
             pagination.put("pageCount", paging.getTotalPages());
             pagination.put("total", paging.getTotalElements());
 
-            return ApiResult.of(paging.getContent(), Map.of("pagination", pagination));
+            return ApiResponse.success(paging.getContent(), Map.of("pagination", pagination));
         }
         // 如果方法上有 @JsonView 注解，则根据查询字符串中的 view 参数的值，动态设置序列化视图。
         JsonView jsonView = returnType.getMethodAnnotation(JsonView.class);
@@ -95,7 +94,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
             }
         }
         // 由于前面已经判断了如果是 ApiResult 就直接返回，因此这里需要将所有返回值包装成 ApiResult 类型。
-        return ApiResult.of(body);
+        return ApiResponse.success(body);
     }
 
     // Helpers

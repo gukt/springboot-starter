@@ -1,6 +1,6 @@
 package com.example.common;
 
-import com.fairyland.common.api.JsonViews.ApiResultView;
+import com.example.common.JsonViews.ApiResultView;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.annotation.Nonnull;

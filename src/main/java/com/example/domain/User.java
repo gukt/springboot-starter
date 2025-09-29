@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,10 +46,11 @@ public class User extends AuditableAndSoftDeletableEntity<Long> {
     @Size(max = 255, message = "头像 URL 长度不能超过 255 个字符")
     private String avatar;
 
-    @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 1 COMMENT '状态: 1-启用, 0-禁用'")
+    @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 1")
     private Boolean status = true;
 
-    private Boolean isAdmin = false;
+    @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 0")
+    private boolean isAdmin = false; // FIXME: 使用 boolean 是为了使用 isAdmin() Getter 名称
 
     private LocalDateTime lastLoginAt;
 }

@@ -61,10 +61,7 @@ dependencies {
 	implementation 'com.github.ben-manes.caffeine:caffeine:3.2.2'
 
 	// Langfuse 追踪和监控
-	// https://github.com/langfuse/langfuse
-	implementation 'com.langfuse:langfuse-java:0.0.1'
-	implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+	implementation 'com.langfuse:langfuse-java:0.1.0'
 
 	// Testing dependencies
 	testImplementation 'io.projectreactor:reactor-test'

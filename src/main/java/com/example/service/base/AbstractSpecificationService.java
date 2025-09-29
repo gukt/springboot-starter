@@ -1,6 +1,6 @@
 package com.example.service.base;
 
-import com.poetry.domain.base.BaseEntity;
+import com.example.domain.base.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +45,7 @@ import java.util.Optional;
  * @see JpaSpecificationExecutor
  */
 @Slf4j
-public abstract class AbstractSpecificationService<T extends BaseEntity<ID>, ID>
+public abstract class AbstractSpecificationService<T extends BaseEntity<ID>, ID extends Serializable>
         extends AbstractService<T, ID> {
 
     /**
