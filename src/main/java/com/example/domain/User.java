@@ -1,6 +1,9 @@
 package com.example.domain;
 
+import com.example.common.view.UserViews;
+import com.example.common.view.Views;
 import com.example.domain.base.AuditableAndSoftDeletableEntity;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "users")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonView(Views.Basic.class) // 默认视图
 public class User extends AuditableAndSoftDeletableEntity<Long> {
 
     public static String DEFAULT_AVATAR = "https://www.gravatar.com/avatar";
@@ -26,14 +30,16 @@ public class User extends AuditableAndSoftDeletableEntity<Long> {
     @Column(nullable = false, length = 50)
     private String username;
 
+    // @JsonView(Views.Basic.class)
     @NotBlank(message = "邮箱不能为空")
     @Email(message = "邮箱格式不正确")
-    @Column( nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String email;
 
     /**
      * 密码，存储加密后的密码，建议使用 BCrypt 等强哈希算法
      */
+    @JsonView(Views.Admin.class)
     @NotBlank(message = "密码不能为空")
     @Size(min = 8, message = "密码长度至少 8 位")
     @Column(nullable = false)
@@ -42,16 +48,19 @@ public class User extends AuditableAndSoftDeletableEntity<Long> {
     /**
      * 头像 URL
      */
+    // @JsonView(Views.Basic.class)
     @Size(max = 255, message = "头像 URL 长度不能超过 255 个字符")
     private String avatar = DEFAULT_AVATAR;
 
     /**
      * 全名，可用做昵称/界面显示名用途
      */
+    // @JsonView(Views.Basic.class)
     private String fullName;
 
     /**
      * 角色，多个角色用逗号分隔
      */
+    @JsonView(Views.Admin.class)
     private String roles = ROLE_DEFAULT;
 }

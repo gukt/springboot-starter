@@ -35,11 +35,11 @@ public class ContentCachingFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // 初始化逻辑
+        // NOOP - 初始化逻辑
     }
 
     @Override
     public void destroy() {
-        // 清理逻辑
+        // NOOP - 清理逻辑
     }
 }

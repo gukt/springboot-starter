@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 
 /**
  * 全局响应体处理器。
+ *
+ * TODO 对于返回 void 的控制器方法，一律返回 ApiResponse.OK
  */
 @RestControllerAdvice(basePackages = "com.example")
 @Slf4j

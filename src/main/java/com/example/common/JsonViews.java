@@ -68,19 +68,19 @@ public class JsonViews {
     interface ApiResultView {
     }
 
-    @JsonViewAlias({"id-only"})
+    @JsonViewAlias({ "id-only" })
     public interface IdOnly extends ApiResultView {
     }
 
-    @JsonViewAlias({"with-attr"})
+    @JsonViewAlias({ "with-attr" })
     public interface WithAttrs extends IdOnly {
     }
 
-    @JsonViewAlias({"user-simple"})
+    @JsonViewAlias({ "user-simple" })
     public interface UserSimpleView extends IdOnly {
     }
 
-    @JsonViewAlias({"user-detail"})
+    @JsonViewAlias({ "user-detail" })
     public interface UserDetailView extends UserSimpleView {
     }
 

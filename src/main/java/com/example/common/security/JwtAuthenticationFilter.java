@@ -22,8 +22,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * JWT 认证过滤器
- * 处理每个请求中的 JWT token
+ * JWT 认证过滤器，处理每个请求中的 JWT token
  * OncePerRequestFilter 确保过滤器每次请求只运行一次。
  */
 @Component
@@ -31,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    // private final JwtUtil jwtUtil; // TODO Remove it
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
     private final TokenBlacklistService tokenBlacklistService;

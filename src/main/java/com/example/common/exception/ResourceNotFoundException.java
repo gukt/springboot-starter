@@ -53,20 +53,6 @@ public class ResourceNotFoundException extends RuntimeException {
     }
 
     /**
-     * 获取资源类型
-     */
-    public String getResourceType() {
-        return resourceType;
-    }
-
-    /**
-     * 获取资源ID
-     */
-    public String getResourceId() {
-        return resourceId;
-    }
-
-    /**
      * 创建用户不存在异常
      */
     public static ResourceNotFoundException userNotFound(Long userId) {
@@ -218,5 +204,19 @@ public class ResourceNotFoundException extends RuntimeException {
      */
     public static ResourceNotFoundException logisticsNotFound(String trackingNumber) {
         return new ResourceNotFoundException("Logistics", trackingNumber, "物流订单不存在");
+    }
+
+    /**
+     * 获取资源类型
+     */
+    public String getResourceType() {
+        return resourceType;
+    }
+
+    /**
+     * 获取资源ID
+     */
+    public String getResourceId() {
+        return resourceId;
     }
 }

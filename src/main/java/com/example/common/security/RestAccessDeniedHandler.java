@@ -2,7 +2,6 @@ package com.example.common.security;
 
 import com.example.common.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * REST 访问拒绝处理器
- * 处理权限不足的请求
+ * REST 访问拒绝处理器，处理权限不足的请求
  */
 @Component
 @Slf4j
@@ -28,13 +26,10 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     private final ObjectMapper objectMapper;
 
     @Override
-    public void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AccessDeniedException accessDeniedException
-    ) throws IOException {
-        log.error("Access denied for request {}: {}",
-                 request.getRequestURI(), accessDeniedException.getMessage());
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException {
+        log.error("Access denied for request {}: {}", request.getRequestURI(), accessDeniedException.getMessage());
 
         // 设置响应头
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -42,10 +37,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 
         // 创建错误响应
-        ApiResponse<Void> errorResponse = ApiResponse.error(
-                HttpStatus.FORBIDDEN,
-                "权限不足: " + accessDeniedException.getMessage()
-        );
+        ApiResponse<Void> errorResponse = ApiResponse.error(HttpStatus.FORBIDDEN, "权限不足: " + accessDeniedException.getMessage());
 
         // 写入响应
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));

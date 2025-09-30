@@ -46,20 +46,6 @@ public class ValidationException extends RuntimeException {
     }
 
     /**
-     * 获取验证错误详情
-     */
-    public Map<String, String> getErrors() {
-        return errors;
-    }
-
-    /**
-     * 是否有错误详情
-     */
-    public boolean hasErrors() {
-        return !errors.isEmpty();
-    }
-
-    /**
      * 创建用户名验证失败异常
      */
     public static ValidationException usernameInvalid(String reason) {
@@ -120,5 +106,19 @@ public class ValidationException extends RuntimeException {
      */
     public static ValidationException businessRuleInvalid(String rule, String reason) {
         return new ValidationException("业务规则验证失败", Map.of(rule, reason));
+    }
+
+    /**
+     * 获取验证错误详情
+     */
+    public Map<String, String> getErrors() {
+        return errors;
+    }
+
+    /**
+     * 是否有错误详情
+     */
+    public boolean hasErrors() {
+        return !errors.isEmpty();
     }
 }
