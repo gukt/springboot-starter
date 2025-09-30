@@ -1,26 +1,29 @@
 package com.example.service;
 
-import java.time.LocalDateTime;
+import java.util.Objects;
 
-import com.example.common.security.JwtProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.common.exception.BusinessException;
+import com.example.common.security.CustomUserDetails;
+import com.example.common.security.JwtProperties;
 import com.example.domain.User;
 import com.example.dto.LoginRequest;
+import com.example.dto.LoginResponse;
 import com.example.dto.RegisterRequest;
-import com.example.dto.UserProfile;
 import com.example.repository.UserRepository;
-import com.example.util.JwtUtil;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,14 +40,13 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final JpaUserDetailsService jpaUserDetailsService;
     private final JwtProperties jwtProperties;
 
     /**
      * 用户登录
      */
     @Transactional
-    public UserProfile login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         String username = request.getUsername();
 
         log.info("User login attempt: {}", username);
@@ -55,44 +57,35 @@ public class AuthService {
         try {
             // 执行认证
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(username, request.getPassword()));
 
             // 设置认证信息到上下文
             SecurityContextHolder.getContext().setAuthentication(auth);
-
             // 加载用户详情
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            // 生成 JWT Token
+            String accessToken = jwtService.generateToken(userDetails);
 
-             // 生成 JWT Token
-             String accessToken = jwtService.generateToken(userDetails);
-
-            // 更新用户最后登录时间
-            user.setLastLoginAt(LocalDateTime.now());
             userRepository.save(user);
 
             // 构建响应
-            UserProfile response = UserProfile.builder()
+            LoginResponse response = LoginResponse.builder()
                     .token(accessToken)
-                    .tokenType("Bearer")
-                    .tokenExpiresAt(LocalDateTime.now().plusDays(jwtProperties.getExpiration().toDays()))
-                    .userId(user.getId())
-                    .username(user.getUsername())
-                    .avatar(user.getAvatar())
-                    .email(user.getEmail())
+                    .expiresIn(jwtProperties.getExpiration().toSeconds())
+                    .user(user)
                     .build();
 
-            log.info("User login successful: {}", username);
+            log.info("用户登录成功: {}", username);
             return response;
 
         } catch (BadCredentialsException e) {
-            log.warn("Login failed - invalid credentials for user: {}", username);
+            log.warn("登录失败 - 用户名或密码错误: {}", username);
             throw new RuntimeException("用户名或密码错误");
         } catch (DisabledException e) {
-            log.warn("Login failed - account disabled for user: {}", username);
+            log.warn("登录失败 - 用户账号已被禁用: {}", username);
             throw new RuntimeException("用户账号已被禁用");
-        } catch (Exception e) {
-            log.error("Login failed for user {}: {}", username, e.getMessage(), e);
+        } catch (AuthenticationException e) {
+            log.error("登录失败 - 用户 {}: {}", username, e.getMessage(), e);
             throw new RuntimeException("登录失败: " + e.getMessage());
         }
     }
@@ -101,7 +94,7 @@ public class AuthService {
      * 用户注册
      */
     @Transactional
-    public UserProfile register(RegisterRequest request) {
+    public LoginResponse register(RegisterRequest request) {
         String username = request.getUsername();
         String email = request.getEmail();
 
@@ -109,19 +102,19 @@ public class AuthService {
 
         // 验证用户名是否已存在
         if (userRepository.existsByUsername(username)) {
-            log.warn("Registration failed - username already exists: {}", username);
+            log.warn("注册失败 - 用户名已存在: {}", username);
             throw new RuntimeException("用户名已存在");
         }
 
         // 验证邮箱是否已存在
         if (userRepository.existsByEmail(email)) {
-            log.warn("Registration failed - email already exists: {}", email);
+            log.warn("注册失败 - 邮箱已存在: {}", email);
             throw new RuntimeException("邮箱已存在");
         }
 
         // 验证密码确认
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            log.warn("Registration failed - password mismatch for user: {}", username);
+            log.warn("注册失败 - 密码确认不匹配: {}", username);
             throw new RuntimeException("密码确认不匹配");
         }
 
@@ -131,32 +124,21 @@ public class AuthService {
             user.setUsername(username);
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            // 保存用户
+            user.setFullName(Objects.requireNonNullElse(request.getFullName(), username));
             userRepository.save(user);
 
-            // 生成 JWT Token
-             UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(username);
-             String accessToken = jwtService.generateToken(userDetails);
-
             // 构建响应
-            UserProfile response = UserProfile.builder()
-                    .token(accessToken)
-                    .tokenType("Bearer")
-                    .tokenExpiresAt(LocalDateTime.now().plusDays(jwtProperties.getExpiration().toDays()))
-                    .userId(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .avatar(user.getAvatar())
-                    // FIXME
-                    // .tokenExpiresAt(enExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .loginTime(LocalDateTime.now())
+            LoginResponse response = LoginResponse.builder()
+                    .token(jwtService.generateToken(username)) // 生成 JWT Token
+                    .expiresIn(jwtProperties.getExpiration().toSeconds())
+                    .user(user)
                     .build();
 
-            log.info("User registration successful: {}", username);
+            log.info("注册成功: {}", username);
             return response;
 
         } catch (Exception e) {
-            log.error("Registration failed for user {}: {}", username, e.getMessage(), e);
+            log.error("注册失败 - 用户 {}: {}", username, e.getMessage(), e);
             throw new RuntimeException("注册失败: " + e.getMessage());
         }
     }
@@ -169,7 +151,7 @@ public class AuthService {
         try {
             if (token != null && !token.isEmpty()) {
                 // 从 Token 中提取用户信息
-//                String username = jwtService.extractUsername(token);
+                // String username = jwtService.extractUsername(token);
                 String username = "FIXME";
                 if (username != null) {
                     // 清除安全上下文
@@ -184,19 +166,37 @@ public class AuthService {
         }
     }
 
-    public User getCurrentUser() {
-        // 从 SecurityContext 中获取当前登录的用户
+    /**
+     * 尝试获取当前登录用户 ID，如果用户已登录且验证通过，返回其 userId，反之返回 {@code null}
+     * 
+     * @return 当前登录用户 ID，如果用户未登录，返回 {@code null}
+     */
+    @Nullable
+    public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 没有认证信息或认证未通过，返回 null
         if (authentication == null || !authentication.isAuthenticated()) {
-            return null; // 没有认证信息，返回 null
+            return null;
         }
 
+        // 如果用户已登录且验证通过，返回其 userId
         Object principal = authentication.getPrincipal();
-        if (principal instanceof User user) {
-            return user; // 如果 principal 是 User 类型，直接返回
+        if (principal instanceof CustomUserDetails userDetails) {
+            return userDetails.getUserId();
         }
-        // 如果 principal 不是 User 类型，可以根据实际情况处理，比如返回 null 或抛出异常
         return null;
+    }
+
+    /**
+     * 获取当前登录用户 ID，如果用户未登录，抛出 {@link BusinessException}
+     */
+    public long requireCurrentUserId() {
+        Long userId = getCurrentUserId();
+        if (userId == null) {
+            throw new BusinessException("用户未登录");
+        }
+        return userId;
     }
 
 }

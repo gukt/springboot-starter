@@ -46,19 +46,11 @@ public class UserService extends AbstractService<User, Long> {
     }
 
     /**
-     * 获取用户详情
-     */
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("用户不存在"));
-    }
-
-    /**
      * 更新用户
      */
     @Transactional
     public User updateUser(Long id, User user) {
-        User existingUser = getUserById(id);
+        User existingUser = getById(id);
 
         if (!existingUser.getUsername().equals(user.getUsername()) && userRepository.existsByUsername(user.getUsername())) {
             throw new BusinessException("用户名已存在");
@@ -99,7 +91,7 @@ public class UserService extends AbstractService<User, Long> {
      */
     @Transactional
     public User updateUserStatus(Long id, boolean status) {
-        User user = getUserById(id);
+        User user = getById(id);
         user.setUpdatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
@@ -109,7 +101,7 @@ public class UserService extends AbstractService<User, Long> {
      */
     @Transactional
     public void changePassword(Long id, String oldPassword, String newPassword) {
-        User user = getUserById(id);
+        User user = getById(id);
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new BusinessException("旧密码不正确");
@@ -125,7 +117,7 @@ public class UserService extends AbstractService<User, Long> {
      */
     @Transactional
     public String resetPassword(Long id) {
-        User user = getUserById(id);
+        User user = getById(id);
         String newPassword = "123456"; // 实际应用中应该生成随机密码
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setUpdatedAt(LocalDateTime.now());

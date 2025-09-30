@@ -1,9 +1,29 @@
 package com.example.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import com.example.common.security.CustomUserDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.common.ApiResponse;
 import com.example.domain.User;
 import com.example.service.AuthService;
 import com.example.service.UserService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,14 +31,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 用户控制器
@@ -51,7 +63,7 @@ public class UserController {
     @Operation(summary = "获取用户详情", description = "根据用户ID获取用户详情")
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public User getUserById(@Parameter(description = "用户ID") @PathVariable Long id) {
-        return userService.getUserById(id);
+        return userService.getById(id);
     }
 
     /**
@@ -144,29 +156,30 @@ public class UserController {
     /**
      * 获取当前用户信息
      */
-    @GetMapping("/user")
-    @Operation(summary = "获取当前用户", description = "获取当前登录用户信息")
-    public User getCurrentUser() {
-        return authService.getCurrentUser();
+    @GetMapping("/user/profile")
+    @Operation(summary = "获取当前用户信息")
+    public User getUserProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        long userId = userDetails.getUserId();
+        return userService.getById(userId);
     }
 
     /**
      * 更新当前用户信息
      */
-    @PutMapping("/user")
-    @Operation(summary = "更新当前用户", description = "更新当前登录用户信息")
-    public User updateCurrentUser(@Valid @RequestBody User user) {
-        User currentUser = authService.getCurrentUser();
-        return userService.updateUser(currentUser.getId(), user);
+    @PutMapping("/user/profile")
+    @Operation(summary = "更新当前用户信息")
+    public User updateUserProfile(@Valid @RequestBody User user) {
+        long userId = authService.requireCurrentUserId();
+        return userService.updateUser(userId, user);
     }
 
     /**
      * 修改当前用户密码
      */
     @PostMapping("/user/change-password")
-    @Operation(summary = "修改当前用户密码", description = "修改当前登录用户密码")
-    public void changeCurrentUserPassword(@RequestBody Map<String, String> passwordRequest) {
-        User currentUser = authService.getCurrentUser();
+    @Operation(summary = "修改当前用户密码")
+    public void changePassword(@RequestBody Map<String, String> passwordRequest) {
+        long userId = authService.requireCurrentUserId();
         String oldPassword = passwordRequest.get("oldPassword");
         String newPassword = passwordRequest.get("newPassword");
 
@@ -174,6 +187,6 @@ public class UserController {
             throw new IllegalArgumentException("旧密码和新密码不能为空");
         }
 
-        userService.changePassword(currentUser.getId(), oldPassword, newPassword);
+        userService.changePassword(userId, oldPassword, newPassword);
     }
 }

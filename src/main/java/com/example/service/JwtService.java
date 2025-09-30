@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtService {
 
     private final JwtProperties jwtProperties;
+    private final UserDetailsService userDetailsService;
     private SecretKey secretKey;
 
     @PostConstruct
@@ -45,14 +46,18 @@ public class JwtService {
         }
     }
 
-    public String generateToken(UserDetails user) {
+    public String generateToken(String username) {
+        return generateToken(userDetailsService.loadUserByUsername(username));
+    }
+
+    public String generateToken(UserDetails userDetails) {
         Instant now = Instant.now();
-        List<String> roles = user.getAuthorities().stream()
+        List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
         return Jwts.builder()
-                .subject(user.getUsername())
+                .subject(userDetails.getUsername())
                 .issuer(jwtProperties.getIssuer())
                 .claim("roles", roles)
                 .issuedAt(Date.from(now))

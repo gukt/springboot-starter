@@ -137,50 +137,30 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.cache: DEBUG
     org.springframework.data.redis: DEBUG
-
-  # 设置日志滚动时的各项设置，包括：文件大小、历史文件数量、总大小限制，以及日志滚动时的文件名格式
+  # 设置日志滚动的各项设置：文件大小、历史文件数量、总大小限制，以及日志滚动时的文件名格式
   logback:
     rollingpolicy:
       max-file-size: 50MB
       max-history: 30
       total-size-cap: 50GB
       file-name-pattern: ${logging.file.path}/${spring.application.name}-%d{yyyy-MM-dd}.%i.log
-
   # 日志文件保存路径及名称设置
   file:
     name: ${spring.application.name}.log
-    path: ${app.data-location}/logs
-
+    # TODO 这里似乎没有起到作用，日志文件默认输出到了项目根目录
+    path: ./logs
   # MDC 支持，日志中包含请求 ID 和用户 ID
-  pattern:
-    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{mdc}){green} %m%n%wEx"
-    file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+  # TODO 如果使用下面自定义的 pattern，在 IDEA 里查看的日志文件中有很多 ESC 占位符，不知道怎么回事
+#  pattern:
+#    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %clr(%X{mdc}){green} %m%n%wEx"
+#    file: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
 
 ## 应用信息
 app:
+  data-location: ${APP_DATA_LOCATION:./data}  # 应用数据存储位置
   security:
-    allow-paths: /api/auth/**,/swagger-ui/**,/api-docs/**,/actuator/**
-    cors:
-      allowed-origins: "*"
-      allowed-methods: GET,POST,PUT,DELETE,OPTIONS,HEAD
-      allowed-headers: "*"
-      allow-credentials: true
-      max-age: 3600
     # JWT 配置
     jwt:
       secret: ${JWT_SECRET:myVerySecureSecretKeyThatIsAtLeast32CharactersLong123456789}
       issuer: ${JWT_ISSUER:${spring.application.name}}
-      expiration: 1d # 1 天
-  cache:
-    default-ttl: 3600 # 默认缓存时间：1小时
-    user-ttl: 1800 # 用户缓存时间：30分钟
-    api-ttl: 600 # API 响应缓存时间：10分钟
-  pagination:
-    default-size: 20 # 默认分页大小
-    max-size: 100 # 最大分页大小
-  upload:
-    path: ${UPLOAD_PATH:./uploads} # 文件上传路径
-    max-size: 10485760 # 最大文件大小：10MB
-  file:
-    storage-type: local # 文件存储类型：local,oss,minio
-    allowed-types: jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx,txt
+      expiration: 1d  # 1 天

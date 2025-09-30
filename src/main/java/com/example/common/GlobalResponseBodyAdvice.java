@@ -24,10 +24,8 @@ import java.util.regex.Pattern;
 
 /**
  * 全局响应体处理器。
- * <p>
- * <a href="https://stackoverflow.com/a/64940739/21335614">@ControllerAdvice does not allow Swagger UI to be displayed</a>
  */
-@RestControllerAdvice(basePackages = "com.fairyland")
+@RestControllerAdvice(basePackages = "com.example")
 @Slf4j
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
@@ -40,6 +38,7 @@ public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, @Nonnull Class<? extends HttpMessageConverter<?>> converterType) {
+        // Issue: https://stackoverflow.com/questions/64473435/controlleradvice-does-not-allow-swagger-ui-to-be-displayed/64940739#64940739
         if (returnType.getGenericParameterType().toString().contains("springfox")) {
             return false;
         }
