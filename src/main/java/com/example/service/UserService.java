@@ -71,7 +71,6 @@ public class UserService extends AbstractService<User, Long> {
         existingUser.setUsername(user.getUsername());
         existingUser.setEmail(user.getEmail());
         existingUser.setAvatar(user.getAvatar());
-        existingUser.setStatus(user.getStatus());
         existingUser.setUpdatedAt(LocalDateTime.now());
 
         return userRepository.save(existingUser);
@@ -101,7 +100,6 @@ public class UserService extends AbstractService<User, Long> {
     @Transactional
     public User updateUserStatus(Long id, boolean status) {
         User user = getUserById(id);
-        user.setStatus(status);
         user.setUpdatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }

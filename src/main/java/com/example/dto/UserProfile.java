@@ -43,10 +43,6 @@ public class UserProfile {
     @Schema(description = "头像 URL", example = "https://example.com/avatar.jpg")
     private String avatar;
 
-    @Schema(description = "是否为管理员", example = "true")
-    @Builder.Default
-    private Boolean isAdmin = false;
-
     @Schema(description = "是否需要修改密码", example = "false")
     @Builder.Default
     private Boolean requirePasswordChange = false;

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,9 +38,11 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RestAccessDeniedHandler accessDeniedHandler;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final UserDetailsService userDetailsService;
+
 
     /**
-     * 密码编码器
+     * 密码编码器（使用 BCrypt 哈希算法），用于安全密码存储。
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,12 +61,10 @@ public class SecurityConfig {
      * 认证提供者
      */
     @Bean
-    public AuthenticationProvider authenticationProvider(
-            UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
 
@@ -91,24 +92,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             // 禁用 CSRF
-            .csrf(csrf -> csrf.disable())
-
+            .csrf(AbstractHttpConfigurer::disable)
             // 禁用 HTTP Basic 认证
-            .httpBasic(httpBasic -> httpBasic.disable())
-
+            .httpBasic(AbstractHttpConfigurer::disable)
             // 禁用表单登录
-            .formLogin(formLogin -> formLogin.disable())
-
+            .formLogin(AbstractHttpConfigurer::disable)
             // 配置 CORS
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-            // 配置会话管理
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-
+            // 配置会话管理（JWT 必须配置为 STATELESS）
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // 配置授权规则
-            .authorizeHttpRequests(authz -> authz
+            .authorizeHttpRequests(auth -> auth
                 // 公开接口
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
@@ -122,13 +116,11 @@ public class SecurityConfig {
                 // 需要认证的接口
                 .anyRequest().authenticated()
             )
-
             // 配置异常处理
-            .exceptionHandling(exceptions -> exceptions
+            .exceptionHandling(ex -> ex
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
             )
-
             // 添加 JWT 过滤器
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

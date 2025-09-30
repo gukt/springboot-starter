@@ -44,27 +44,17 @@ public class RedisConfig {
         return new Jackson2JsonRedisSerializer<>(objectMapper, Object.class);
     }
 
-    /**
-     * 主要的 RedisTemplate Bean，用于操作复杂对象，使用 Jackson 序列化
-     */
     @Bean
     @Primary
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = jackson2JsonRedisSerializer();
+
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-
-        // 创建 Jackson 序列化器
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = jackson2JsonRedisSerializer();
-        // 创建 String 序列化器
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-
-        // 统一设置对应所有的 Key 都使用 String 序列化，默认为 JdkSerializationRedisSerializer
         template.setDefaultSerializer(stringRedisSerializer);
-        // 对于所有的 Value 以及 Hash Value 均采用 jackson2JsonRedisSerializer
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
-
-        // 启用事务支持
         template.setEnableTransactionSupport(true);
         template.afterPropertiesSet();
 
@@ -72,9 +62,6 @@ public class RedisConfig {
         return template;
     }
 
-    /**
-     * 专门用于 String 操作的 RedisTemplate
-     */
     @Bean("stringRedisTemplate")
     public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
         StringRedisTemplate template = new StringRedisTemplate();

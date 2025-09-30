@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
  * 认证控制器。
  * 处理用户登录、注册、Token刷新等认证相关操作
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "认证管理", description = "用户认证相关接口")
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;

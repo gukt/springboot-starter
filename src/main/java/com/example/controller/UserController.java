@@ -85,17 +85,6 @@ public class UserController {
     }
 
     /**
-     * 更新用户状态
-     */
-    @PatchMapping("/users/{id}/status")
-    @Operation(summary = "更新用户状态", description = "更新用户状态")
-    @PreAuthorize("hasRole('ADMIN')")
-    public User updateUserStatus(@Parameter(description = "用户ID") @PathVariable Long id,
-            @Parameter(description = "用户状态") @RequestParam boolean status) {
-        return userService.updateUserStatus(id, status);
-    }
-
-    /**
      * 修改密码
      */
     @PostMapping("/users/{id}/change-password")

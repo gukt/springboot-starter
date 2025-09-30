@@ -2,12 +2,14 @@ package com.example.service;
 
 import java.time.LocalDateTime;
 
+import com.example.common.security.JwtProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +35,10 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final JpaUserDetailsService jpaUserDetailsService;
+    private final JwtProperties jwtProperties;
 
     /**
      * 用户登录
@@ -45,25 +49,23 @@ public class AuthService {
 
         log.info("User login attempt: {}", username);
 
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("用户不存在"));
+
         try {
             // 执行认证
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, request.getPassword()));
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, request.getPassword())
+            );
 
             // 设置认证信息到上下文
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
             // 加载用户详情
-            // FIXME
-            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("用户不存在"));
+            UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
-            // FIXME
-            // // 生成JWT Token
-            // String accessToken = jwtUtil.generateToken(userDetails, user.getId(),
-            // user.getFullName());
-            // String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+             // 生成 JWT Token
+             String accessToken = jwtService.generateToken(userDetails);
 
             // 更新用户最后登录时间
             user.setLastLoginAt(LocalDateTime.now());
@@ -71,15 +73,13 @@ public class AuthService {
 
             // 构建响应
             UserProfile response = UserProfile.builder()
-                    .token("TODO: accessToken")
+                    .token(accessToken)
                     .tokenType("Bearer")
-                    .tokenExpiresAt(LocalDateTime.now())
+                    .tokenExpiresAt(LocalDateTime.now().plusDays(jwtProperties.getExpiration().toDays()))
                     .userId(user.getId())
                     .username(user.getUsername())
                     .avatar(user.getAvatar())
                     .email(user.getEmail())
-                    // FIXME
-                    // .expiresIn(calculateExpiryTime(jwtUtil.getExpiration()))
                     .build();
 
             log.info("User login successful: {}", username);
@@ -131,28 +131,24 @@ public class AuthService {
             user.setUsername(username);
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setStatus(true);
-            user.setAdmin(false);
-
             // 保存用户
             userRepository.save(user);
 
             // 生成 JWT Token
-            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            // String accessToken = jwtUtil.generateToken(userDetails, user.getId(),
-            // user.getFullName());
+             UserDetails userDetails = jpaUserDetailsService.loadUserByUsername(username);
+             String accessToken = jwtService.generateToken(userDetails);
 
             // 构建响应
             UserProfile response = UserProfile.builder()
-                    .token("TODO: accessToken")
+                    .token(accessToken)
                     .tokenType("Bearer")
+                    .tokenExpiresAt(LocalDateTime.now().plusDays(jwtProperties.getExpiration().toDays()))
                     .userId(user.getId())
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .avatar(user.getAvatar())
                     // FIXME
                     // .tokenExpiresAt(enExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .isAdmin(user.isAdmin())
                     .loginTime(LocalDateTime.now())
                     .build();
 
@@ -166,62 +162,6 @@ public class AuthService {
     }
 
     /**
-     * 刷新Token
-     */
-    @Transactional
-    public UserProfile refreshToken(String refreshToken) {
-        log.debug("Token refresh attempt");
-
-        try {
-            // 验证刷新Token
-            if (!jwtUtil.isRefreshToken(refreshToken)) {
-                log.warn("Invalid refresh token type");
-                throw new RuntimeException("无效的刷新Token");
-            }
-
-            if (!jwtUtil.validateToken(refreshToken)) {
-                log.warn("Invalid or expired refresh token");
-                throw new RuntimeException("刷新Token已过期或无效");
-            }
-
-            // 从Token中提取用户名
-            String username = jwtUtil.extractUsername(refreshToken);
-            if (username == null) {
-                log.warn("Cannot extract username from refresh token");
-                throw new RuntimeException("无效的刷新Token");
-            }
-
-            // 加载用户详情
-            // UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            User user = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new RuntimeException("用户不存在"));
-
-            // 生成新的Token
-            // String newAccessToken = jwtUtil.generateToken(userDetails, user.getId(),
-            // user.getFullName());
-
-            // 构建响应
-            UserProfile response = UserProfile.builder()
-                    .token("TODO: newAccessToken")
-                    .tokenType("Bearer")
-                    .userId(user.getId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .avatar(user.getAvatar())
-                    .tokenExpiresAt(calculateExpiryTime(jwtUtil.getExpiration()))
-                    .isAdmin(user.isAdmin())
-                    .build();
-
-            log.debug("Token refresh successful for user: {}", username);
-            return response;
-
-        } catch (Exception e) {
-            log.error("Token refresh failed: {}", e.getMessage(), e);
-            throw new RuntimeException("Token刷新失败: " + e.getMessage());
-        }
-    }
-
-    /**
      * 用户登出
      */
     @Transactional
@@ -229,7 +169,8 @@ public class AuthService {
         try {
             if (token != null && !token.isEmpty()) {
                 // 从 Token 中提取用户信息
-                String username = jwtUtil.extractUsername(token);
+//                String username = jwtService.extractUsername(token);
+                String username = "FIXME";
                 if (username != null) {
                     // 清除安全上下文
                     SecurityContextHolder.clearContext();
@@ -258,26 +199,4 @@ public class AuthService {
         return null;
     }
 
-    /**
-     * 验证Token
-     */
-    public boolean validateToken(String token) {
-        try {
-            if (token == null || token.isEmpty()) {
-                return false;
-            }
-
-            return jwtUtil.validateToken(token);
-        } catch (Exception e) {
-            log.debug("Token validation failed: {}", e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * 计算过期时间
-     */
-    private LocalDateTime calculateExpiryTime(Long expirationMs) {
-        return LocalDateTime.now().plusSeconds(expirationMs / 1000);
-    }
 }

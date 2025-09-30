@@ -42,36 +42,6 @@ public class WebConfig implements WebMvcConfigurer  {
     }
 
     /**
-     * CORS 配置源 - 用于 Spring Security
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOriginPattern("*");
-        configuration.addAllowedMethod("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    /**
-     * 配置消息转换器
-     */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // Jackson消息转换器会自动配置，这里可以进行自定义
-        converters.stream()
-                .filter(converter -> converter instanceof MappingJackson2HttpMessageConverter)
-                .forEach(converter -> {
-                    log.info("Jackson HTTP Message Converter configured");
-                });
-    }
-
-    /**
      * 配置静态资源处理
      */
     @Override
@@ -92,30 +62,4 @@ public class WebConfig implements WebMvcConfigurer  {
         log.info("Static resource handlers configured");
     }
 
-    /**
-     * 配置异步请求支持
-     */
-    @Override
-    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-        // 异步请求超时时间(30秒)
-        configurer.setDefaultTimeout(TimeUnit.SECONDS.toMillis(30));
-
-        log.info("Async support configured with 30s timeout");
-    }
-
-    /**
-     * 配置内容缓存过滤器
-     */
-    @Bean
-    @ConditionalOnProperty(name = "langfuse.enabled", havingValue = "true")
-    public FilterRegistrationBean<ContentCachingFilter> contentCachingFilter() {
-        FilterRegistrationBean<ContentCachingFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new ContentCachingFilter());
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        registrationBean.setName("contentCachingFilter");
-
-        log.info("Content caching filter registered for Langfuse tracing");
-        return registrationBean;
-    }
 }

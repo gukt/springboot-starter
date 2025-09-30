@@ -1,11 +1,9 @@
 package com.example.common.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -16,17 +14,17 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 缓存配置类
@@ -66,10 +64,10 @@ public class CacheConfig {
 
         // 设置默认配置
         cacheManager.setCaffeine(com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
-                .initialCapacity(100)              // 初始容量
-                .maximumSize(1000)                 // 最大容量
-                .expireAfterWrite(Duration.ofMinutes(30))  // 写入后30分钟过期
-                .recordStats());                    // 记录统计信息
+                .initialCapacity(100) // 初始容量
+                .maximumSize(1000) // 最大容量
+                .expireAfterWrite(Duration.ofMinutes(30)) // 写入后30分钟过期
+                .recordStats()); // 记录统计信息
 
         log.info("Caffeine cache manager configured");
         return cacheManager;
@@ -85,17 +83,17 @@ public class CacheConfig {
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 
         // 配置序列化
-        RedisSerializationContext.SerializationPair<Object> jsonSerialization =
-                RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
-        RedisSerializationContext.SerializationPair<String> stringSerialization =
-                RedisSerializationContext.SerializationPair.fromSerializer(stringRedisSerializer);
+        RedisSerializationContext.SerializationPair<Object> jsonSerialization = RedisSerializationContext.SerializationPair
+                .fromSerializer(jackson2JsonRedisSerializer);
+        RedisSerializationContext.SerializationPair<String> stringSerialization = RedisSerializationContext.SerializationPair
+                .fromSerializer(stringRedisSerializer);
 
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(stringSerialization)
                 .serializeValuesWith(jsonSerialization)
-                .entryTtl(Duration.ofHours(1))       // 默认1小时过期
-                .disableCachingNullValues()         // 不缓存空值
-                .computePrefixWith(cacheName -> cacheName + ":");  // 设置缓存键前缀
+                .entryTtl(Duration.ofHours(1)) // 默认1小时过期
+                .disableCachingNullValues() // 不缓存空值
+                .computePrefixWith(cacheName -> cacheName + ":"); // 设置缓存键前缀
     }
 
     /**
@@ -127,52 +125,55 @@ public class CacheConfig {
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(defaultConfig)
                 .withInitialCacheConfigurations(cacheConfigurations)
-                .transactionAware()                 // 支持事务
+                .transactionAware() // 支持事务
                 .build();
     }
 
-    /**
-     * 主要的 RedisTemplate Bean，用于操作复杂对象，使用 Jackson 序列化
-     */
-    @Bean
-    @Primary
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(connectionFactory);
-
-        // 创建序列化器
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = jackson2JsonRedisSerializer();
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-
-        // 设置 Key 序列化
-        template.setKeySerializer(stringRedisSerializer);
-        template.setHashKeySerializer(stringRedisSerializer);
-
-        // 设置 Value 序列化
-        template.setValueSerializer(jackson2JsonRedisSerializer);
-        template.setHashValueSerializer(jackson2JsonRedisSerializer);
-
-        // 启用事务支持
-        template.setEnableTransactionSupport(true);
-        template.afterPropertiesSet();
-
-        log.info("RedisTemplate configured with Jackson serializer");
-        return template;
-    }
-
-    /**
-     * 专门用于 String 操作的 RedisTemplate
-     */
-    @Bean("stringRedisTemplate")
-    public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory connectionFactory) {
-        StringRedisTemplate template = new StringRedisTemplate();
-        template.setConnectionFactory(connectionFactory);
-        template.setEnableTransactionSupport(true);
-        template.afterPropertiesSet();
-
-        log.info("StringRedisTemplate configured for string operations");
-        return template;
-    }
+    // /**
+    // * 主要的 RedisTemplate Bean，用于操作复杂对象，使用 Jackson 序列化
+    // */
+    // @Bean
+    // @Primary
+    // public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory
+    // connectionFactory) {
+    // RedisTemplate<String, Object> template = new RedisTemplate<>();
+    // template.setConnectionFactory(connectionFactory);
+    //
+    // // 创建序列化器
+    // Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer =
+    // jackson2JsonRedisSerializer();
+    // StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+    //
+    // // 设置 Key 序列化
+    // template.setKeySerializer(stringRedisSerializer);
+    // template.setHashKeySerializer(stringRedisSerializer);
+    //
+    // // 设置 Value 序列化
+    // template.setValueSerializer(jackson2JsonRedisSerializer);
+    // template.setHashValueSerializer(jackson2JsonRedisSerializer);
+    //
+    // // 启用事务支持
+    // template.setEnableTransactionSupport(true);
+    // template.afterPropertiesSet();
+    //
+    // log.info("RedisTemplate configured with Jackson serializer");
+    // return template;
+    // }
+    //
+    // /**
+    // * 专门用于 String 操作的 RedisTemplate
+    // */
+    // @Bean("stringRedisTemplate")
+    // public StringRedisTemplate stringRedisTemplate(RedisConnectionFactory
+    // connectionFactory) {
+    // StringRedisTemplate template = new StringRedisTemplate();
+    // template.setConnectionFactory(connectionFactory);
+    // template.setEnableTransactionSupport(true);
+    // template.afterPropertiesSet();
+    //
+    // log.info("StringRedisTemplate configured for string operations");
+    // return template;
+    // }
 
     /**
      * 多级缓存管理器
@@ -185,7 +186,8 @@ public class CacheConfig {
             CaffeineCacheManager caffeineCacheManager,
             RedisCacheManager redisCacheManager) {
 
-        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(caffeineCacheManager, redisCacheManager);
+        CompositeCacheManager compositeCacheManager = new CompositeCacheManager(caffeineCacheManager,
+                redisCacheManager);
         compositeCacheManager.setFallbackToNoOpCache(true);
 
         log.info("Multi-level cache manager configured with Caffeine (L1) and Redis (L2)");
