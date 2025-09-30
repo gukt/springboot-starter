@@ -17,6 +17,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +32,8 @@ public class JwtService {
 
     private final JwtProperties jwtProperties;
     private final UserDetailsService userDetailsService;
+
+    @Getter
     private SecretKey secretKey;
 
     @PostConstruct

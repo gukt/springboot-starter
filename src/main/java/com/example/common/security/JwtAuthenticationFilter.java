@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.service.JwtService;
+import com.example.service.TokenBlacklistService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // private final JwtUtil jwtUtil; // TODO Remove it
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -48,6 +50,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         if (!jwtService.validateToken(token)) {
             filterChain.doFilter(request, response); // TODO 或者直接返回 401
+            return;
+        }
+
+        // 检查 Token 是否在黑名单中
+        if (tokenBlacklistService.isBlacklisted(token)) {
+            log.debug("Blacklisted token detected");
+            filterChain.doFilter(request, response);
             return;
         }
 

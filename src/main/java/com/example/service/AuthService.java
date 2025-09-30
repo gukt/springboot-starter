@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.example.common.exception.BusinessException;
 import com.example.common.security.CustomUserDetails;
@@ -24,6 +27,7 @@ import com.example.dto.RegisterRequest;
 import com.example.repository.UserRepository;
 
 import jakarta.annotation.Nullable;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +45,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final JwtProperties jwtProperties;
+    private final TokenBlacklistService tokenBlacklistService;
 
     /**
      * 用户登录
@@ -147,28 +152,26 @@ public class AuthService {
      * 用户登出
      */
     @Transactional
-    public void logout(String token) {
+    public void logout(User user) {
         try {
-            if (token != null && !token.isEmpty()) {
-                // 从 Token 中提取用户信息
-                // String username = jwtService.extractUsername(token);
-                String username = "FIXME";
-                if (username != null) {
-                    // 清除安全上下文
-                    SecurityContextHolder.clearContext();
-
-                    log.info("User logout successful: {}", username);
-                }
+            // 从请求头中获取当前的 token
+            String token = getCurrentToken();
+            if (token != null) {
+                // 将 token 添加到黑名单
+                tokenBlacklistService.addToBlacklist(token);
             }
+            log.info("用户成功登出 - {}#{}", user.getUsername(), user.getId());
         } catch (Exception e) {
-            log.error("Logout failed: {}", e.getMessage(), e);
-            // 登出失败不影响用户体验，只记录日志
+            log.error("用户登出失败 - {}#{}: {}", user.getUsername(), user.getId(), e.getMessage(), e);
+        } finally {
+            // 不管成功还是失败，总是清除当前线程的安全上下文
+            SecurityContextHolder.clearContext();
         }
     }
 
     /**
      * 尝试获取当前登录用户 ID，如果用户已登录且验证通过，返回其 userId，反之返回 {@code null}
-     * 
+     *
      * @return 当前登录用户 ID，如果用户未登录，返回 {@code null}
      */
     @Nullable
@@ -199,4 +202,23 @@ public class AuthService {
         return userId;
     }
 
+    /**
+     * 从请求上下文中提取 Token
+     */
+    private String getCurrentToken() {
+        try {
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+            if (requestAttributes instanceof ServletRequestAttributes servletRequestAttributes) {
+                HttpServletRequest request = servletRequestAttributes.getRequest();
+                String authHeader = request.getHeader("Authorization");
+
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    return authHeader.substring(7);
+                }
+            }
+        } catch (Exception e) {
+            log.debug("Error extracting token from request: {}", e.getMessage());
+        }
+        return null;
+    }
 }

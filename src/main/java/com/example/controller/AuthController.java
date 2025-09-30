@@ -1,6 +1,7 @@
 package com.example.controller;
 
-import com.example.dto.LoginResponse;
+import com.example.domain.User;
+import com.example.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dto.LoginRequest;
+import com.example.dto.LoginResponse;
 import com.example.dto.RegisterRequest;
 import com.example.service.AuthService;
 
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserService userService;
 
     /**
      * 用户注册
@@ -53,17 +56,9 @@ public class AuthController {
      */
     @PostMapping("/logout")
     @Operation(summary = "用户登出")
-    public void logout(@RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
-        log.info("User logout attempt");
-
-        // 提取 Token
-        String token = null;
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            token = authorizationHeader.substring(7);
-        }
-
-        authService.logout(token);
-
-        log.info("User logout successful");
+    public void logout() {
+        long userId = authService.requireCurrentUserId();
+        User user = userService.getById(userId);
+        authService.logout(user);
     }
 }

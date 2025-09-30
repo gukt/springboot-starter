@@ -8237,3 +8237,349 @@ java.lang.RuntimeException: 用户名已存在
 2025-09-30T17:16:19.740+08:00 DEBUG 1071107 --- [springboot-starter] [http-nio-8080-exec-5] m.m.a.RequestResponseBodyMethodProcessor : Writing [ApiResponse(data=User(username=test1, email=test1@domain.com, password=$2a$10$RiTiL6RxPVzJcmKFwgCTne (truncated)...]
 2025-09-30T17:16:19.740+08:00 DEBUG 1071107 --- [springboot-starter] [http-nio-8080-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
 2025-09-30T17:16:51.624+08:00  INFO 1071107 --- [springboot-starter] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-09-30T17:29:11.750+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] o.s.d.r.l.RedisMessageListenerContainer  : Stopped RedisMessageListenerContainer
+2025-09-30T17:29:11.751+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-30T17:29:11.754+08:00  INFO 1071107 --- [springboot-starter] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-30T17:29:11.756+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : clientOutboundChannel removed SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:29:11.756+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : clientInboundChannel removed WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:29:11.757+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-30T17:29:11.757+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@4541de90]]
+2025-09-30T17:29:11.757+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : clientInboundChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@4541de90]
+2025-09-30T17:29:11.757+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : brokerChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@4541de90]
+2025-09-30T17:29:11.757+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-30T17:29:11.757+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : clientInboundChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:29:11.757+08:00 DEBUG 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] org.springframework.web.SimpLogging      : brokerChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:29:11.779+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:29:11.781+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown initiated...
+2025-09-30T17:29:11.784+08:00  INFO 1071107 --- [springboot-starter] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown completed.
+2025-09-30T17:29:24.422+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Starting Application using Java 17.0.16 with PID 1179879 (/home/gukt/github/springboot-starter/build/classes/java/main started by gukt in /home/gukt/github/springboot-starter)
+2025-09-30T17:29:24.424+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : The following 1 profile is active: "dev"
+2025-09-30T17:29:24.445+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-30T17:29:24.925+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:29:24.926+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-30T17:29:24.991+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 2 JPA repository interfaces.
+2025-09-30T17:29:25.000+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:29:25.001+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-09-30T17:29:25.009+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.AppConfigRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:29:25.010+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:29:25.010+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2025-09-30T17:29:25.350+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-30T17:29:25.357+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-30T17:29:25.357+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-30T17:29:25.378+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-30T17:29:25.378+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 932 ms
+2025-09-30T17:29:25.483+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Starting...
+2025-09-30T17:29:25.586+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@1abdab3
+2025-09-30T17:29:25.587+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Start completed.
+2025-09-30T17:29:25.627+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/springboot_starter_dev?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true (MySQL 8.4)
+2025-09-30T17:29:25.636+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 8.4 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2025-09-30T17:29:25.655+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 0 migrations (execution time 00:00.013s)
+2025-09-30T17:29:25.655+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : No migrations found. Are your locations set up correctly?
+2025-09-30T17:29:25.664+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `springboot_starter_dev`: << Empty Schema >>
+2025-09-30T17:29:25.666+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `springboot_starter_dev` is up to date. No migration necessary.
+2025-09-30T17:29:25.705+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-30T17:29:25.726+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-09-30T17:29:25.741+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-30T17:29:25.883+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-30T17:29:25.912+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-30T17:29:25.920+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (SpringBootHikariCP)']
+	Database driver: undefined/unknown
+	Database version: 8.4.6
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-30T17:29:26.366+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-30T17:29:26.382+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:29:26.677+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : RedisTemplate configured with Jackson serializer for values
+2025-09-30T17:29:26.752+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-30T17:29:27.134+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-30T17:29:27.135+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-30T17:29:27.154+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Caffeine cache manager configured
+2025-09-30T17:29:27.165+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Multi-level cache manager configured with Caffeine (L1) and Redis (L2)
+2025-09-30T17:29:27.166+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : StringRedisTemplate configured for string operations
+2025-09-30T17:29:27.263+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.s.s.WebSocketHandlerMapping      : Patterns [/gs-guide-websocket] in 'stompWebSocketHandlerMapping'
+2025-09-30T17:29:27.274+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-09-30T17:29:27.276+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : CORS configuration applied
+2025-09-30T17:29:27.318+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 42 mappings in 'requestMappingHandlerMapping'
+2025-09-30T17:29:27.344+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : Static resource handlers configured
+2025-09-30T17:29:27.351+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui/**, /v3/api-docs/**, /static/**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-09-30T17:29:27.429+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-30T17:29:27.582+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AppConfigController:
+	
+2025-09-30T17:29:27.582+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AuthController:
+	
+2025-09-30T17:29:27.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.GreetingController:
+	{[MESSAGE],[/hello]}: greeting(HelloMessage)
+2025-09-30T17:29:27.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.TestController:
+	
+2025-09-30T17:29:27.585+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.UserController:
+	
+2025-09-30T17:29:27.585+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.b.a.w.s.e.BasicErrorController:
+	
+2025-09-30T17:29:27.586+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.MultipleOpenApiWebMvcResource:
+	
+2025-09-30T17:29:27.586+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.OpenApiWebMvcResource:
+	
+2025-09-30T17:29:27.586+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerWelcomeWebMvc:
+	
+2025-09-30T17:29:27.586+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerConfigResource:
+	
+2025-09-30T17:29:27.637+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 2 ResponseBodyAdvice
+2025-09-30T17:29:27.671+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 2 ResponseBodyAdvice
+2025-09-30T17:29:27.839+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-30T17:29:27.860+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientOutboundChannel added SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:29:27.860+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:29:27.861+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-30T17:29:27.861+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]
+2025-09-30T17:29:27.861+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]
+2025-09-30T17:29:27.861+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]]
+2025-09-30T17:29:27.862+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-30T17:29:27.862+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:29:27.862+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:29:27.872+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-30T17:29:27.873+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Starting RedisMessageListenerContainer...
+2025-09-30T17:29:27.874+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Postpone listening for Redis messages until actual listeners are added
+2025-09-30T17:29:27.880+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Started Application in 3.699 seconds (process running for 5.951)
+2025-09-30T17:30:30.758+08:00  INFO 1179879 --- [springboot-starter] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-09-30T17:31:17.676+08:00  INFO 1179879 --- [springboot-starter] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-09-30T17:31:17.679+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] o.s.d.r.l.RedisMessageListenerContainer  : Stopped RedisMessageListenerContainer
+2025-09-30T17:31:17.680+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-30T17:31:17.683+08:00  INFO 1179879 --- [springboot-starter] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-30T17:31:17.684+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : clientOutboundChannel removed SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:31:17.684+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : clientInboundChannel removed WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:31:17.685+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-30T17:31:17.685+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]]
+2025-09-30T17:31:17.685+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : clientInboundChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]
+2025-09-30T17:31:17.685+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : brokerChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3fb1879c]
+2025-09-30T17:31:17.685+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-30T17:31:17.686+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : clientInboundChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:31:17.686+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-5] org.springframework.web.SimpLogging      : brokerChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:31:17.709+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:31:17.712+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown initiated...
+2025-09-30T17:31:17.715+08:00  INFO 1179879 --- [springboot-starter] [Thread-5] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown completed.
+2025-09-30T17:31:17.773+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Starting Application using Java 17.0.16 with PID 1179879 (/home/gukt/github/springboot-starter/build/classes/java/main started by gukt in /home/gukt/github/springboot-starter)
+2025-09-30T17:31:17.773+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : The following 1 profile is active: "dev"
+2025-09-30T17:31:17.932+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:31:17.932+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-30T17:31:17.941+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 2 JPA repository interfaces.
+2025-09-30T17:31:17.943+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:31:17.943+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-09-30T17:31:17.946+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.AppConfigRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:31:17.946+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:31:17.946+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2025-09-30T17:31:18.050+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-30T17:31:18.051+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-30T17:31:18.051+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-30T17:31:18.060+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-30T17:31:18.060+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 286 ms
+2025-09-30T17:31:18.103+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Starting...
+2025-09-30T17:31:18.108+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@b366de9
+2025-09-30T17:31:18.108+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Start completed.
+2025-09-30T17:31:18.140+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/springboot_starter_dev?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true (MySQL 8.4)
+2025-09-30T17:31:18.150+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 8.4 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2025-09-30T17:31:18.160+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 0 migrations (execution time 00:00.008s)
+2025-09-30T17:31:18.160+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : No migrations found. Are your locations set up correctly?
+2025-09-30T17:31:18.167+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `springboot_starter_dev`: << Empty Schema >>
+2025-09-30T17:31:18.168+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `springboot_starter_dev` is up to date. No migration necessary.
+2025-09-30T17:31:18.181+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-30T17:31:18.183+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-30T17:31:18.189+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-30T17:31:18.191+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-30T17:31:18.191+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (SpringBootHikariCP)']
+	Database driver: undefined/unknown
+	Database version: 8.4.6
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-30T17:31:18.242+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-30T17:31:18.251+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:31:18.297+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : RedisTemplate configured with Jackson serializer for values
+2025-09-30T17:31:18.375+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-30T17:31:18.377+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-30T17:31:18.394+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Caffeine cache manager configured
+2025-09-30T17:31:18.397+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Multi-level cache manager configured with Caffeine (L1) and Redis (L2)
+2025-09-30T17:31:18.398+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : StringRedisTemplate configured for string operations
+2025-09-30T17:31:18.455+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.s.s.WebSocketHandlerMapping      : Patterns [/gs-guide-websocket] in 'stompWebSocketHandlerMapping'
+2025-09-30T17:31:18.464+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-09-30T17:31:18.464+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : CORS configuration applied
+2025-09-30T17:31:18.484+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 42 mappings in 'requestMappingHandlerMapping'
+2025-09-30T17:31:18.507+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : Static resource handlers configured
+2025-09-30T17:31:18.508+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui/**, /v3/api-docs/**, /static/**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-09-30T17:31:18.545+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-30T17:31:18.583+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AppConfigController:
+	
+2025-09-30T17:31:18.583+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AuthController:
+	
+2025-09-30T17:31:18.583+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.GreetingController:
+	{[MESSAGE],[/hello]}: greeting(HelloMessage)
+2025-09-30T17:31:18.583+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.TestController:
+	
+2025-09-30T17:31:18.583+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.UserController:
+	
+2025-09-30T17:31:18.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.b.a.w.s.e.BasicErrorController:
+	
+2025-09-30T17:31:18.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.MultipleOpenApiWebMvcResource:
+	
+2025-09-30T17:31:18.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.OpenApiWebMvcResource:
+	
+2025-09-30T17:31:18.584+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerWelcomeWebMvc:
+	
+2025-09-30T17:31:18.585+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerConfigResource:
+	
+2025-09-30T17:31:18.615+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 2 ResponseBodyAdvice
+2025-09-30T17:31:18.625+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 2 ResponseBodyAdvice
+2025-09-30T17:31:18.704+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientOutboundChannel added SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:31:18.713+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]
+2025-09-30T17:31:18.713+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]]
+2025-09-30T17:31:18.713+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:31:18.713+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:31:18.715+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-30T17:31:18.716+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Starting RedisMessageListenerContainer...
+2025-09-30T17:31:18.716+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Postpone listening for Redis messages until actual listeners are added
+2025-09-30T17:31:18.719+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Started Application in 0.966 seconds (process running for 112.431)
+2025-09-30T17:31:18.720+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-30T17:32:21.664+08:00  INFO 1179879 --- [springboot-starter] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-09-30T17:35:18.039+08:00  INFO 1179879 --- [springboot-starter] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-09-30T17:35:18.041+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] o.s.d.r.l.RedisMessageListenerContainer  : Stopped RedisMessageListenerContainer
+2025-09-30T17:35:18.042+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-30T17:35:18.043+08:00  INFO 1179879 --- [springboot-starter] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-30T17:35:18.044+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : clientOutboundChannel removed SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:35:18.044+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : clientInboundChannel removed WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:35:18.044+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2025-09-30T17:35:18.044+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]]
+2025-09-30T17:35:18.044+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : clientInboundChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]
+2025-09-30T17:35:18.044+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : brokerChannel removed SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6785c893]
+2025-09-30T17:35:18.044+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2025-09-30T17:35:18.045+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : clientInboundChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:35:18.045+08:00 DEBUG 1179879 --- [springboot-starter] [Thread-7] org.springframework.web.SimpLogging      : brokerChannel removed UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:35:18.050+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:35:18.051+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown initiated...
+2025-09-30T17:35:18.052+08:00  INFO 1179879 --- [springboot-starter] [Thread-7] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Shutdown completed.
+2025-09-30T17:35:18.099+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Starting Application using Java 17.0.16 with PID 1179879 (/home/gukt/github/springboot-starter/build/classes/java/main started by gukt in /home/gukt/github/springboot-starter)
+2025-09-30T17:35:18.099+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : The following 1 profile is active: "dev"
+2025-09-30T17:35:18.236+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:35:18.237+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-30T17:35:18.244+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 2 JPA repository interfaces.
+2025-09-30T17:35:18.246+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-09-30T17:35:18.246+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-09-30T17:35:18.248+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.AppConfigRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:35:18.248+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.example.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-09-30T17:35:18.250+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 Redis repository interfaces.
+2025-09-30T17:35:18.335+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-30T17:35:18.335+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-30T17:35:18.336+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-30T17:35:18.342+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-30T17:35:18.343+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 243 ms
+2025-09-30T17:35:18.380+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Starting...
+2025-09-30T17:35:18.386+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : SpringBootHikariCP - Added connection com.mysql.cj.jdbc.ConnectionImpl@72c8afca
+2025-09-30T17:35:18.387+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.zaxxer.hikari.HikariDataSource       : SpringBootHikariCP - Start completed.
+2025-09-30T17:35:18.391+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/springboot_starter_dev?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true (MySQL 8.4)
+2025-09-30T17:35:18.397+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: MySQL 8.4 is newer than this version of Flyway and support has not been tested. The latest supported version of MySQL is 8.1.
+2025-09-30T17:35:18.405+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 0 migrations (execution time 00:00.006s)
+2025-09-30T17:35:18.405+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbValidate     : No migrations found. Are your locations set up correctly?
+2025-09-30T17:35:18.421+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema `springboot_starter_dev`: << Empty Schema >>
+2025-09-30T17:35:18.422+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.f.core.internal.command.DbMigrate      : Schema `springboot_starter_dev` is up to date. No migration necessary.
+2025-09-30T17:35:18.450+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-30T17:35:18.452+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-30T17:35:18.457+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-30T17:35:18.459+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-30T17:35:18.459+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (SpringBootHikariCP)']
+	Database driver: undefined/unknown
+	Database version: 8.4.6
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-30T17:35:18.506+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-30T17:35:18.513+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-30T17:35:18.552+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : RedisTemplate configured with Jackson serializer for values
+2025-09-30T17:35:18.616+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-30T17:35:18.616+08:00  WARN 1179879 --- [springboot-starter] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-30T17:35:18.628+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Caffeine cache manager configured
+2025-09-30T17:35:18.631+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.CacheConfig    : Multi-level cache manager configured with Caffeine (L1) and Redis (L2)
+2025-09-30T17:35:18.631+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.RedisConfig    : StringRedisTemplate configured for string operations
+2025-09-30T17:35:18.679+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.s.s.WebSocketHandlerMapping      : Patterns [/gs-guide-websocket] in 'stompWebSocketHandlerMapping'
+2025-09-30T17:35:18.686+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-09-30T17:35:18.687+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : CORS configuration applied
+2025-09-30T17:35:18.707+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 42 mappings in 'requestMappingHandlerMapping'
+2025-09-30T17:35:18.725+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.common.config.WebConfig      : Static resource handlers configured
+2025-09-30T17:35:18.726+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui/**, /v3/api-docs/**, /static/**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-09-30T17:35:18.759+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AppConfigController:
+	
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.AuthController:
+	
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.GreetingController:
+	{[MESSAGE],[/hello]}: greeting(HelloMessage)
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.TestController:
+	
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	c.e.c.UserController:
+	
+2025-09-30T17:35:18.794+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.b.a.w.s.e.BasicErrorController:
+	
+2025-09-30T17:35:18.795+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.MultipleOpenApiWebMvcResource:
+	
+2025-09-30T17:35:18.795+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.a.OpenApiWebMvcResource:
+	
+2025-09-30T17:35:18.795+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerWelcomeWebMvc:
+	
+2025-09-30T17:35:18.795+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .WebSocketAnnotationMethodMessageHandler : 
+	o.s.w.u.SwaggerConfigResource:
+	
+2025-09-30T17:35:18.820+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 2 ResponseBodyAdvice
+2025-09-30T17:35:18.829+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 2 ResponseBodyAdvice
+2025-09-30T17:35:18.903+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-30T17:35:18.911+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientOutboundChannel added SubProtocolWebSocketHandler[StompSubProtocolHandler[v10.stomp, v11.stomp, v12.stomp]]
+2025-09-30T17:35:18.911+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added WebSocketAnnotationMethodMessageHandler[prefixes=[/app/]]
+2025-09-30T17:35:18.911+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2025-09-30T17:35:18.912+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@27356426]
+2025-09-30T17:35:18.912+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@27356426]
+2025-09-30T17:35:18.912+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@27356426]]
+2025-09-30T17:35:18.912+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2025-09-30T17:35:18.912+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : clientInboundChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:35:18.912+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] org.springframework.web.SimpLogging      : brokerChannel added UserDestinationMessageHandler[DefaultUserDestinationResolver[prefix=/user/]]
+2025-09-30T17:35:18.914+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-30T17:35:18.914+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Starting RedisMessageListenerContainer...
+2025-09-30T17:35:18.914+08:00 DEBUG 1179879 --- [springboot-starter] [restartedMain] o.s.d.r.l.RedisMessageListenerContainer  : Postpone listening for Redis messages until actual listeners are added
+2025-09-30T17:35:18.917+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] com.example.Application                  : Started Application in 0.831 seconds (process running for 342.874)
+2025-09-30T17:35:18.918+08:00  INFO 1179879 --- [springboot-starter] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-30T17:36:21.623+08:00  INFO 1179879 --- [springboot-starter] [MessageBroker-1] o.s.w.s.c.WebSocketMessageBrokerStats    : WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
